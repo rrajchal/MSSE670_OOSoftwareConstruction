@@ -1,11 +1,17 @@
 package org.topcard;
 
+import org.topcard.debug.Debug;
+
 import java.time.LocalDate;
 import java.time.Period;
 
 /**
  * The Player class represents a player in the card game.
  * A player has a first name, last name, date of birth, points, admin status, and a hand of cards.
+ * <p>
+ * Author: Rajesh Rajchal
+ * Date: 10/27/2024
+ * Subject: MSSE 670 Object Oriented Software construction
  */
 public class Player {
     private String firstName;
@@ -124,7 +130,7 @@ public class Player {
             if (card != null) {
                 System.out.println(card);
             } else {
-                System.out.println("Error: There is no card");
+                Debug.error("Error: There is no card");
             }
         }
     }
