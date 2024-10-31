@@ -1,5 +1,7 @@
 package org.topcard;
 
+import java.util.Objects;
+
 /**
  * The Card class represents a playing card with a specific suit and rank.
  * It is immutable, meaning once it is created, its suit and rank cannot be changed.
@@ -97,4 +99,18 @@ public class Card {
     public String toString() {
         return rank + " OF " + suit;
     }
-}
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Card card = (Card) obj;
+        return suit == card.suit && rank == card.rank;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(suit, rank);
+    }
+
+    }
