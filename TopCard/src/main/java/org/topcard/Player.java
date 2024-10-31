@@ -13,7 +13,7 @@ import java.time.Period;
  */
 public class Player {
     private String username;
-    private String password; // In a real application, passwords should be hashed
+    private String password;
     private String firstName;
     private String lastName;
     private LocalDate dateOfBirth;
