@@ -1,4 +1,4 @@
-package org.topcard.exceptions;
+package com.topcard.exceptions;
 
 /**
  * The TopCardException class is a custom exception that extends the RuntimeException.

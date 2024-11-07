@@ -1,4 +1,4 @@
-package org.topcard.debug;
+package com.topcard.debug;
 
 /**
  * Class for logging debug, warning and error messages.

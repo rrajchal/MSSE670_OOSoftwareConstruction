@@ -1,9 +1,7 @@
+package com.topcard.domain;
 
 import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.Test;
-
-import org.topcard.Card;
-import org.topcard.Deck;
+import org.junit.Test;
 
 public class DeckTest {
 
@@ -30,7 +28,6 @@ public class DeckTest {
         Deck deck = new Deck();
         Card dealtCard = deck.deal();
         assertNotNull(dealtCard);
-
     }
 
     @Test
@@ -40,5 +37,13 @@ public class DeckTest {
             assertNotNull(deck.deal());
         }
         assertNull(deck.deal()); // No more cards to deal
+    }
+
+    @Test
+    public void testToString() {
+        Deck deck = new Deck();
+        String deckStr = deck.toString();
+        assertNotNull(deckStr);
+        assertTrue(deckStr.contains("ACE OF SPADES"), "A new Deck must contain ACE OF SPADES.");
     }
 }

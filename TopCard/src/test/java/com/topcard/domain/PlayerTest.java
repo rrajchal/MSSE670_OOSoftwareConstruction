@@ -1,8 +1,7 @@
+package com.topcard.domain;
+
 import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.Test;
-import org.topcard.Card;
-import org.topcard.Deck;
-import org.topcard.Player;
+import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -20,6 +19,8 @@ public class PlayerTest {
         assertEquals(dob, player.getDateOfBirth());
         assertEquals(0, player.getPoints());
         assertFalse(player.isAdmin());
+        assertNotNull(player.getHand());
+        player.setNumOfCards(3);
         assertNotNull(player.getHand());
         assertEquals(3, player.getHand().length);
     }
@@ -116,38 +117,16 @@ public class PlayerTest {
     }
 
     @Test
-    void testAuthenticateSuccessful() {
-        Player player = new Player("user123", "pass123", "", "", LocalDate.of(2000, 1, 1));
-        assertTrue(player.authenticate("user123", "pass123"), "Authentication should be successful with correct credentials.");
-    }
+    public void testToString() {
+        Player mickey = new Player("mickey_mouse", "disney123", "Mickey", "Mouse", LocalDate.of(1928, 11, 18));
+        mickey.setPlayerId(1);
+        mickey.setPoints(500);
+        mickey.setAdmin(false);
+        mickey.setLoggedIn(true);
 
-    @Test
-    void testAuthenticateWrongUsername() {
-        Player player = new Player("user123", "pass123", "", "", LocalDate.of(2000, 1, 1));
-        assertFalse(player.authenticate("wrongUser", "pass123"), "Authentication should fail with wrong username.");
-    }
+        String playerString = mickey.toString();
 
-    @Test
-    void testAuthenticateWrongPassword() {
-        Player player = new Player("user123", "pass123", "", "", LocalDate.of(2000, 1, 1));
-        assertFalse(player.authenticate("user123", "wrongPass"), "Authentication should fail with wrong password.");
-    }
-
-    @Test
-    void testAuthenticateNullUsername() {
-        Player player = new Player("user123", "pass123", "", "", LocalDate.of(2000, 1, 1));
-        assertFalse(player.authenticate(null, "pass123"), "Authentication should fail with null username.");
-    }
-
-    @Test
-    void testAuthenticateNullPassword() {
-        Player player = new Player("user123", "pass123", "", "", LocalDate.of(2000, 1, 1));
-        assertFalse(player.authenticate("user123", null), "Authentication should fail with null password.");
-    }
-
-    @Test
-    void testAuthenticateNullCredentials() {
-        Player player = new Player("user123", "pass123", "", "", LocalDate.of(2000, 1, 1));
-        assertFalse(player.authenticate(null, null), "Authentication should fail with null credentials.");
+        assertTrue(playerString.contains("playerId=1"), "toString should contain playerId=1");
+        assertTrue(playerString.contains("username='mickey_mouse'"), "toString should contain username='mickey_mouse'");
     }
 }

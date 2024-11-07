@@ -1,7 +1,9 @@
+package com.topcard.debug;
+
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.topcard.debug.Debug;
+import com.topcard.debug.Debug;
 
 /**
  * This test class tests displays of messages in different colors

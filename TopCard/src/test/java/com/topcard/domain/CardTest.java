@@ -1,6 +1,8 @@
+package com.topcard.domain;
+
 import static org.junit.jupiter.api.Assertions.*;
-import org.junit.jupiter.api.Test;
-import org.topcard.Card;
+import org.junit.Test;
+
 
 public class CardTest {
 

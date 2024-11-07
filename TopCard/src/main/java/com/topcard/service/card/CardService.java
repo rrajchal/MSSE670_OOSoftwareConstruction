@@ -1,0 +1,51 @@
+package com.topcard.service.card;
+
+import com.topcard.domain.Card;
+import com.topcard.domain.Deck;
+
+/**
+ * CardService is a service class that implements the ICardService interface.
+ * It provides the business logic for card-related operations in the TopCard game.
+ * This includes drawing cards and shuffling the deck.
+ *
+ */
+public class CardService implements ICardService {
+    private Deck deck;
+
+    public CardService() {
+        this.deck = new Deck();  // Initialize the deck
+    }
+
+    @Override
+    public Card drawCard() {
+        return deck.deal();
+    }
+
+    @Override
+    public void shuffleDeck() {
+        deck.shuffle();
+    }
+
+    @Override
+    public Deck createDeck() {
+        this.deck = new Deck();
+        return deck;
+    }
+
+    @Override
+    public Deck createShuffledDeck() {
+        this.deck = new Deck();
+        deck.shuffle();
+        return this.deck;
+    }
+
+    @Override
+    public int getRemainingCards() {
+        return deck.getRemainingCards();
+    }
+
+    @Override
+    public boolean isDeckEmpty() {
+        return deck.getRemainingCards() == 0;
+    }
+}

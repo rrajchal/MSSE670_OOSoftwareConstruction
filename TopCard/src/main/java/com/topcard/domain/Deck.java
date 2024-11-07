@@ -1,4 +1,4 @@
-package org.topcard;
+package com.topcard.domain;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -12,14 +12,19 @@ import java.util.Collections;
  * Subject: MSSE 670 Object Oriented Software construction
  */
 public class Deck {
-    private Card[] cards;
+    private final Card[] cards; // There will be exactly 52 cards
+    /**
+     * The index of the next card to be dealt from the deck. This variable tacks the position of the next card to be drawn.
+     * For example, the first card after the creation of a deck will be at index 0.
+     * And, after dealing 51 cards, there is only one card left on the deck; the card index is 51.
+     */
     private int currentIndex;
-    private final int NUM_OF_CARDS_IN_DECK = 52;
 
     /**
      * Constructs a new Deck with 52 cards, including all suits and ranks.
      */
     public Deck() {
+        int NUM_OF_CARDS_IN_DECK = 52;
         cards = new Card[NUM_OF_CARDS_IN_DECK];
         currentIndex = 0;
         // Create the deck
@@ -51,4 +56,29 @@ public class Deck {
         }
         return cards[currentIndex++];
     }
+
+    /**
+     * Returns the number of remaining cards in the deck.
+     *
+     * @return the number of remaining cards
+     */
+    public int getRemainingCards() {
+        return cards.length - currentIndex;
+    }
+
+    /**
+     * Returns a string representation of the deck.
+     * Each card is listed with its rank and suit.
+     *
+     * @return a string representation of the deck
+     */
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder("Deck contains:\n");
+        for (int i = currentIndex; i < cards.length; i++) {
+            sb.append(cards[i].toString()).append("\n");
+        }
+        return sb.toString();
+    }
+
 }

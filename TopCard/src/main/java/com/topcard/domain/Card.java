@@ -1,4 +1,4 @@
-package org.topcard;
+package com.topcard.domain;
 
 import java.util.Objects;
 
@@ -7,7 +7,7 @@ import java.util.Objects;
  * It is immutable, meaning once it is created, its suit and rank cannot be changed.
  * <p>
  * Author: Rajesh Rajchal
- * Date: 10/27/2024
+ * Date: 11/03/2024
  * Subject: MSSE 670 Object Oriented Software construction
  */
 public class Card {
@@ -113,4 +113,4 @@ public class Card {
         return Objects.hash(suit, rank);
     }
 
-    }
+}

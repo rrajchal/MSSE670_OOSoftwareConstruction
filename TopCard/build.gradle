@@ -2,8 +2,8 @@ plugins {
     id 'java'
 }
 
-group = 'org.example'
-version = '1.0-SNAPSHOT'
+group 'com.topcard'
+version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
@@ -12,6 +12,8 @@ repositories {
 dependencies {
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
+    testImplementation 'junit:junit:4.13.2'  // JUnit 4 dependency for Test Suite
+    testRuntimeOnly 'org.junit.vintage:junit-vintage-engine' // JUnit Vintage engine for running JUnit 4 tests for Test Suite
 }
 
 test {
