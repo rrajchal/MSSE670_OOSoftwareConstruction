@@ -9,7 +9,7 @@ import org.junit.runners.Suite;
  *
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({CardTest.class, DeckTest.class, PlayerTest.class})
+@Suite.SuiteClasses({CardTest.class, DeckTest.class, PlayerTest.class, GameTest.class})
 public class AllDomainTestsSuite {
     // This class remains empty. Nothing needs to be written.
 }

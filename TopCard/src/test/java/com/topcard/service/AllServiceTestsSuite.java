@@ -8,7 +8,7 @@ import org.junit.runners.Suite;
  * service layer test classes in the application.
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({CardServiceTest.class, PlayerServiceTest.class})
+@Suite.SuiteClasses({CardServiceTest.class, PlayerServiceTest.class, GameServiceTest.class})
 public class AllServiceTestsSuite {
     // This class remains empty. Nothing needs to be written.
 }

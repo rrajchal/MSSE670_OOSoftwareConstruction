@@ -6,6 +6,9 @@ import org.junit.Test;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class PlayerTest {
 
@@ -17,7 +20,7 @@ public class PlayerTest {
         assertEquals("Mickey", player.getFirstName());
         assertEquals("Mouse", player.getLastName());
         assertEquals(dob, player.getDateOfBirth());
-        assertEquals(0, player.getPoints());
+        assertEquals(100, player.getPoints());
         assertFalse(player.isAdmin());
         assertNotNull(player.getHand());
         player.setNumOfCards(3);
@@ -33,14 +36,14 @@ public class PlayerTest {
     }
 
     @Test
-    public void testDrawCard() {
+    public void testDrawCards() {
         Player player = new Player("", "", "Michael", "Smith", LocalDate.of(1985, 11, 25));
         Deck deck = new Deck();
         deck.shuffle();
 
-        player.drawCard(deck);
-        player.drawCard(deck);
-        player.drawCard(deck);
+        player.drawCards(deck);
+        player.drawCards(deck);
+        player.drawCards(deck);
 
         int nonNullCards = 0;
         for (Card card : player.getHand()) {
@@ -58,22 +61,22 @@ public class PlayerTest {
         Deck deck = new Deck();
         deck.shuffle();
 
-        player.drawCard(deck);
-        player.drawCard(deck);
-        player.drawCard(deck);
+        player.drawCards(deck);
+        player.drawCards(deck);
+        player.drawCards(deck);
 
         int handValue = player.getHandValue();
         assertTrue(handValue > 0);
     }
 
     @Test
-    public void testAddPoints() {
+    public void testChangePoints() {
         Player player = new Player("", "", "Charlie", "Brown", LocalDate.of(2000, 2, 1));
-        player.addPoints(10);
-        assertEquals(10, player.getPoints());
+        player.changePoints(10);
+        assertEquals(110, player.getPoints());
 
-        player.addPoints(5);
-        assertEquals(15, player.getPoints());
+        player.changePoints(5);
+        assertEquals(115, player.getPoints());
     }
 
     @Test
@@ -90,9 +93,9 @@ public class PlayerTest {
         Deck deck = new Deck();
         deck.shuffle();
 
-        player.drawCard(deck);
-        player.drawCard(deck);
-        player.drawCard(deck);
+        player.drawCards(deck);
+        player.drawCards(deck);
+        player.drawCards(deck);
 
         // Capture the output of showHand()
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
@@ -117,6 +120,48 @@ public class PlayerTest {
     }
 
     @Test
+    public void testBet() {
+        Player player1 = new Player("username1", "password", "firstName1", "lastName1", LocalDate.of(2000, 1, 1));
+        Player player2 = new Player("username2", "password", "firstName2", "lastName2", LocalDate.of(2000, 2, 1));
+        Player player3 = new Player("username3", "password", "firstName3", "lastName3", LocalDate.of(2000, 3, 1));
+        player1.setPoints(100);
+        player2.setPoints(100);
+        player3.setPoints(100);
+
+        // Set hands with three cards each
+        player1.setHand(new Card[] {
+                new Card(Card.Suit.SPADES, Card.Rank.KING),   // Value: 10
+                new Card(Card.Suit.HEARTS, Card.Rank.QUEEN),  // Value: 10
+                new Card(Card.Suit.DIAMONDS, Card.Rank.JACK)  // Value: 10
+        }); // Total hand value: 30
+
+        player2.setHand(new Card[] {
+                new Card(Card.Suit.CLUBS, Card.Rank.NINE),    // Value: 9
+                new Card(Card.Suit.SPADES, Card.Rank.EIGHT),  // Value: 8
+                new Card(Card.Suit.HEARTS, Card.Rank.SEVEN)   // Value: 7
+        }); // Total hand value: 24
+
+        player3.setHand(new Card[] {
+                new Card(Card.Suit.DIAMONDS, Card.Rank.SIX),  // Value: 6
+                new Card(Card.Suit.CLUBS, Card.Rank.FIVE),    // Value: 5
+                new Card(Card.Suit.SPADES, Card.Rank.FOUR)    // Value: 4
+        }); // Total hand value: 15
+
+        List<Player> playerWithNewPoints = player1.updatePoints(10, Arrays.asList(player2, player3));
+
+
+        assertEquals(120, player1.getPoints()); // Player 1 wins 10 points from both Player 2 and Player 3
+        assertEquals(90, player2.getPoints());
+        assertEquals(90, player3.getPoints());
+    }
+
+    @Test
+    public void testDefalutPoint() {
+        List<Player> players = generatePlayers();
+        assertEquals(100, players.get(0).getPoints());
+    }
+
+    @Test
     public void testToString() {
         Player mickey = new Player("mickey_mouse", "disney123", "Mickey", "Mouse", LocalDate.of(1928, 11, 18));
         mickey.setPlayerId(1);
@@ -129,4 +174,18 @@ public class PlayerTest {
         assertTrue(playerString.contains("playerId=1"), "toString should contain playerId=1");
         assertTrue(playerString.contains("username='mickey_mouse'"), "toString should contain username='mickey_mouse'");
     }
+
+    public List<Player> generatePlayers() {
+        List<Player> players = new ArrayList<>();
+        Player mickey = new Player("mickey", "password", "Mickey", "Mouse", LocalDate.of(1990, 1, 1));
+        Player donald = new Player("donald", "password", "Donald", "Duck", LocalDate.of(1995, 6, 15));
+        Player michael = new Player("michael", "password", "Michael", "Smith", LocalDate.of(1985, 11, 25));
+        Player rajesh = new Player("rajesh", "password", "Rajesh", "Rajchal", LocalDate.of(1980, 4, 10));
+        players.add(mickey);
+        players.add(donald);
+        players.add(michael);
+        players.add(rajesh);
+        return players;
+    }
+
 }

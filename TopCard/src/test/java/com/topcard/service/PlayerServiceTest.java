@@ -1,6 +1,7 @@
 package com.topcard.service;
 
 import com.topcard.domain.Player;
+import com.topcard.domain.PlayerTest;
 import com.topcard.service.player.PlayerService;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,19 +14,19 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class PlayerServiceTest {
 
-    private PlayerService testPlayer;
+    private PlayerService testPlayerService;
 
     @Before
     public void setUp() {
-        testPlayer = new PlayerService();
+        testPlayerService = new PlayerService();
         deleteAllPlayersData();  // clean all data before starting each test
     }
 
     @Test
     public void testAddPlayer() {
         Player player = new Player("Mickey", "mouse123", "Mickey", "Mouse", LocalDate.of(1928, 11, 18));
-        testPlayer.addPlayer(player);
-        List<Player> allPlayers = testPlayer.getAllPlayers();
+        testPlayerService.addPlayer(player);
+        List<Player> allPlayers = testPlayerService.getAllPlayers();
         assertEquals(1, allPlayers.size());
     }
 
@@ -35,10 +36,10 @@ public class PlayerServiceTest {
         try {
             Method method = PlayerService.class.getDeclaredMethod("deleteAllPlayersData");
             method.setAccessible(true);
-            method.invoke(testPlayer);
+            method.invoke(testPlayerService);
 
             // Check if all data has been deleted
-            List<Player> allPlayers = testPlayer.getAllPlayers();
+            List<Player> allPlayers = testPlayerService.getAllPlayers();
             assertTrue(allPlayers.isEmpty());
         } catch (Exception e) {
             fail("Reflection error: " + e.getMessage());
@@ -48,11 +49,11 @@ public class PlayerServiceTest {
     @Test
     public void testRemovePlayer() {
         Player player = new Player("Minnie", "mouse123", "Minnie", "Mouse", LocalDate.of(1928, 11, 18));
-        testPlayer.addPlayer(player);
+        testPlayerService.addPlayer(player);
         int playerId = player.getPlayerId();
 
-        testPlayer.removePlayer(playerId);
-        Player removedPlayer = testPlayer.getPlayerById(playerId);
+        testPlayerService.removePlayer(playerId);
+        Player removedPlayer = testPlayerService.getPlayerById(playerId);
         assertNull(removedPlayer);
     }
 
@@ -60,10 +61,10 @@ public class PlayerServiceTest {
     @Test
     public void testGetPlayerById() {
         Player player = new Player("Donald", "duck123", "Donald", "Duck", LocalDate.of(1934, 6, 9));
-        testPlayer.addPlayer(player);
+        testPlayerService.addPlayer(player);
         int playerId = player.getPlayerId();
 
-        Player fetchedPlayer = testPlayer.getPlayerById(playerId);
+        Player fetchedPlayer = testPlayerService.getPlayerById(playerId);
         assertEquals(player.getUsername(), fetchedPlayer.getUsername());
         assertEquals(player.getFirstName(), fetchedPlayer.getFirstName());
     }
@@ -71,7 +72,7 @@ public class PlayerServiceTest {
     @Test
     public void testGetAllPlayers() {
         createSamplePlayerData();
-        List<Player> playerList = testPlayer.getAllPlayers();
+        List<Player> playerList = testPlayerService.getAllPlayers();
         assertEquals(5, playerList.size());
     }
 
@@ -81,11 +82,11 @@ public class PlayerServiceTest {
         Player donald = new Player("Donald", "duck123", "Donald", "Duck", LocalDate.of(1934, 6, 9));
         Player goofy = new Player("Goofy", "goofy123", "Goofy", "Goof", LocalDate.of(1932, 5, 25));
         Player daisy = new Player("Daisy", "duck123", "Daisy", "Duck", LocalDate.of(1940, 1, 1));
-        testPlayer.addPlayer(mickey);
-        testPlayer.addPlayer(minnie);
-        testPlayer.addPlayer(donald);
-        testPlayer.addPlayer(goofy);
-        testPlayer.addPlayer(daisy);
+        testPlayerService.addPlayer(mickey);
+        testPlayerService.addPlayer(minnie);
+        testPlayerService.addPlayer(donald);
+        testPlayerService.addPlayer(goofy);
+        testPlayerService.addPlayer(daisy);
     }
 
     void deleteAllPlayersData() {
@@ -93,47 +94,72 @@ public class PlayerServiceTest {
         try {
             Method method = PlayerService.class.getDeclaredMethod("deleteAllPlayersData");
             method.setAccessible(true);
-            method.invoke(testPlayer);
+            method.invoke(testPlayerService);
         } catch (Exception e) {
             fail("Reflection error: " + e.getMessage());
         }
     }
 
     @Test
-    public void testAddPoints() {
+    public void testChangePoints() {
         Player player = new Player("Goofy", "goofy123", "Goofy", "Goof", LocalDate.of(1932, 5, 25));
-        testPlayer.addPlayer(player);
+        testPlayerService.addPlayer(player);
         int playerId = player.getPlayerId();
 
-        testPlayer.addPoints(playerId, 50);
+        testPlayerService.changePoints(playerId, 50);
 
-        Player updatedPlayer = testPlayer.getPlayerById(playerId);
-        assertEquals(50, updatedPlayer.getPoints());
+        Player updatedPlayer = testPlayerService.getPlayerById(playerId);
+        assertEquals(150, updatedPlayer.getPoints());
     }
 
     @Test
     public void testIsPlayerAdmin() {
         Player player = new Player("Daisy", "duck123", "Daisy", "Duck", LocalDate.of(1940, 1, 1));
-        testPlayer.addPlayer(player); // by default admin is false
+        testPlayerService.addPlayer(player); // by default admin is false
         int playerId = player.getPlayerId();
 
-        assertFalse(testPlayer.isPlayerAdmin(playerId));
-        testPlayer.makePlayerAdmin(playerId); // make player to admin
-        assertTrue(testPlayer.isPlayerAdmin(playerId));
+        assertFalse(testPlayerService.isPlayerAdmin(playerId));
+        testPlayerService.makePlayerAdmin(playerId); // make player to admin
+        assertTrue(testPlayerService.isPlayerAdmin(playerId));
     }
 
     @Test
     public void testUpdateProfile() {
         Player player = new Player("Pluto", "dog123", "Pluto", "Dog", LocalDate.of(1930, 9, 1));
-        testPlayer.addPlayer(player);
+        testPlayerService.addPlayer(player);
         int playerId = player.getPlayerId();
 
-        testPlayer.updateProfile(playerId, "NewPluto", "NewDog", LocalDate.of(1930, 9, 5));
+        testPlayerService.updateProfile(playerId, "NewPluto", "NewDog", LocalDate.of(1930, 9, 5));
 
-        Player updatedPlayer = testPlayer.getPlayerById(playerId);
+        Player updatedPlayer = testPlayerService.getPlayerById(playerId);
         assertEquals("NewPluto", updatedPlayer.getFirstName());
         assertEquals("NewDog", updatedPlayer.getLastName());
         assertEquals(LocalDate.of(1930, 9, 5), updatedPlayer.getDateOfBirth());
-
     }
+
+    @Test
+    public void testCreatePlayers() {
+        PlayerTest playerTest = new PlayerTest();
+        List<Player> players = playerTest.generatePlayers();
+        for (Player player : players) {
+            testPlayerService.addPlayer(player);
+        }
+    }
+
+    @Test
+    public void testUpdateData() {
+        PlayerTest playerTest = new PlayerTest();
+        List<Player> players = playerTest.generatePlayers();
+        testPlayerService.addPlayers(players);
+        for (Player player : players) {
+            player.setPoints(99);
+        }
+        testPlayerService.updateProfiles(players);
+
+        for (Player player : players) {
+            // Also, you can see the data changed in players.txt
+            assertEquals(99, testPlayerService.retrievePointForPlayer(player.getPlayerId()));
+        }
+    }
+
 }

@@ -24,6 +24,13 @@ public interface IPlayerService {
     void addPlayer(Player player);
 
     /**
+     * Adds players to the system.
+     *
+     * @param players list of players to add
+     */
+    void addPlayers(List<Player> players);
+
+    /**
      * Removes a player from the system.
      *
      * @param playerId the ID of the player to remove
@@ -39,12 +46,14 @@ public interface IPlayerService {
     Player getPlayerById(int playerId);
 
     /**
-     * Adds points to a player's score.
+     * Adds or deducts points to a player's score.
+     * Players gain points when they win, lose when lost
+     * Also, player can buy points
      *
      * @param playerId the ID of the player
      * @param points the number of points to add
      */
-    void addPoints(int playerId, int points);
+    void changePoints(int playerId, int points);
 
     /**
      * Checks if a player is an admin.
@@ -77,6 +86,21 @@ public interface IPlayerService {
      * @param newDateOfBirth the new date of birth
      */
     void updateProfile(int playerId, String newFirstName, String newLastName, LocalDate newDateOfBirth);
+
+    /**
+     * Updates players' profile.
+     *
+     * @param players list of player to be updated
+     */
+    void updateProfiles(List<Player> players);
+
+    /**
+     * Retrieves point from the data file for a give player id
+     *
+     * @param playerId
+     * @return point of a given player id.
+     */
+    int retrievePointForPlayer(int playerId);
 
     /**
      * Retrieves all players from the file and returns a list of Player objects.

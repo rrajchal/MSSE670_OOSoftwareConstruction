@@ -37,6 +37,13 @@ public class PlayerService implements IPlayerService {
     }
 
     @Override
+    public void addPlayers(List<Player> players) {
+        for (Player player : players) {
+            addPlayer(player);
+        }
+    }
+
+    @Override
     public void removePlayer(int playerId) {
         List<String> lines = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(ID_FILE_PATH))) {
@@ -84,10 +91,10 @@ public class PlayerService implements IPlayerService {
     }
 
     @Override
-    public void addPoints(int playerId, int points) {
+    public void changePoints(int playerId, int points) {
         Player player = getPlayerById(playerId);
         if (player != null) {
-            player.addPoints(points);
+            player.changePoints(points);
             updateProfile(player);
         }
     }
@@ -109,33 +116,38 @@ public class PlayerService implements IPlayerService {
 
     @Override
     public void updateProfile(Player player) {
-        List<String> lines = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(ID_FILE_PATH))) {
+            List<String> lines = new ArrayList<>();
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split("[,\\s]+");
                 int existingId = Integer.parseInt(parts[0].trim());
                 if (existingId == player.getPlayerId()) {
-                    lines.add(player.getPlayerId() + "," + player.getUsername() + "," + player.getPassword() + "," +
-                            player.getFirstName() + "," + player.getLastName() + "," + player.getDateOfBirth().toString() +
-                            "," + player.getPoints() + "," + player.isAdmin());
-
+                    // Update only the specific fields that have changed
+                    parts[1] = player.getUsername();
+                    parts[2] = player.getPassword();
+                    parts[3] = player.getFirstName();
+                    parts[4] = player.getLastName();
+                    parts[5] = player.getDateOfBirth().toString();
+                    parts[6] = String.valueOf(player.getPoints());
+                    parts[7] = String.valueOf(player.isAdmin());
+                    lines.add(String.join(",", parts));
                 } else {
                     lines.add(line);
                 }
             }
+            try (FileWriter writer = new FileWriter(ID_FILE_PATH)) {
+                for (String updatedLine : lines) {
+                    writer.write(updatedLine + "\n");
+                }
+            } catch (IOException e) {
+                throw new TopCardException("Error writing to player ID file", e);
+            }
         } catch (IOException e) {
             throw new TopCardException("Error reading player ID file", e);
         }
-
-        try (FileWriter writer = new FileWriter(ID_FILE_PATH)) {
-            for (String updatedLine : lines) {
-                writer.write(updatedLine + "\n");
-            }
-        } catch (IOException e) {
-            throw new TopCardException("Error writing to player ID file", e);
-        }
     }
+
 
     @Override
     public void updateProfile(int playerId, String newFirstName, String newLastName, LocalDate newDateOfBirth) {
@@ -144,6 +156,13 @@ public class PlayerService implements IPlayerService {
             player.setFirstName(newFirstName);
             player.setLastName(newLastName);
             player.setDateOfBirth(newDateOfBirth);
+            updateProfile(player);
+        }
+    }
+
+    @Override
+    public void updateProfiles(List<Player> players) {
+        for (Player player : players) {
             updateProfile(player);
         }
     }
@@ -187,6 +206,23 @@ public class PlayerService implements IPlayerService {
             throw new TopCardException("Error reading player ID file", e);
         }
         return maxId + 1;
+    }
+
+    @Override
+    public int retrievePointForPlayer(int playerId) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(ID_FILE_PATH))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split("[,\\s]+");
+                int existingId = Integer.parseInt(parts[0].trim());
+                if (existingId == playerId) {
+                    return Integer.parseInt(parts[6]); // Assuming the points are at index 6
+                }
+            }
+        } catch (IOException e) {
+            throw new TopCardException("Error reading player ID file", e);
+        }
+        throw new TopCardException("Player not found with ID: " + playerId);
     }
 
     /**

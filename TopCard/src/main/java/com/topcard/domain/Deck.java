@@ -1,5 +1,7 @@
 package com.topcard.domain;
 
+import com.topcard.debug.Debug;
+
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -21,10 +23,15 @@ public class Deck {
     private int currentIndex;
 
     /**
+     * Total number of cards in a deck
+     */
+    final static int NUM_OF_CARDS_IN_DECK = 52;
+
+    /**
      * Constructs a new Deck with 52 cards, including all suits and ranks.
      */
     public Deck() {
-        int NUM_OF_CARDS_IN_DECK = 52;
+        Debug.info("Deck created.");
         cards = new Card[NUM_OF_CARDS_IN_DECK];
         currentIndex = 0;
         // Create the deck

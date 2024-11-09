@@ -3,6 +3,8 @@ package com.topcard.domain;
 import com.topcard.debug.Debug;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The Player class represents a player in the TopCard game.
@@ -40,12 +42,13 @@ public class Player {
      * @param dateOfBirth the player's date of birth
      */
     public Player(String username, String password, String firstName, String lastName, LocalDate dateOfBirth) {
+        Debug.info("Player created");
         this.username = username;
         this.password = password;
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
-        this.points = 0;
+        this.points = 100;    // Default when a player is created.
         this.isAdmin = false; // Default to false
         this.isLoggedIn = false;
     }
@@ -89,7 +92,7 @@ public class Player {
     }
 
     public int getNumOfCards() {
-        if (this.numOfCards <= 0) {
+        if (this.numOfCards <= 0 || this.numOfCards > Deck.NUM_OF_CARDS_IN_DECK) {
             setNumOfCards(this.numOfCards); // will set to default number of cards.
         }
         return this.numOfCards;
@@ -150,9 +153,14 @@ public class Player {
         this.hand = hand;
     }
 
-        // Other methods
-    public void addPoints(int points) {
+    /**
+     * Changes points based on win or loss
+     * Also changes in data
+     * @param points
+     */
+    public void changePoints(int points) {
         this.points += points;
+
     }
 
     public boolean checkAdminStatus() {
@@ -175,7 +183,7 @@ public class Player {
     public void showHand() {
         for (Card card : hand) {
             if (card != null) {
-                System.out.println(card);
+                System.out.println("   " + card);
             } else {
                 Debug.error("Error: There is no card");
             }
@@ -202,20 +210,69 @@ public class Player {
      *
      * @param deck the deck to draw a card from
      */
-    public void drawCard(Deck deck) {
+    public Card drawCard(Deck deck) {
+        Card card = deck.deal();
+        if (hand.length <= numOfCards) {
+            hand[hand.length - 1] = card;
+        }
+        return card;
+    }
+
+
+    /**
+     * Draws cards from the deck and adds it to the player's hand.
+     *
+     * @param deck the deck to draw a card from
+     */
+    public Card[] drawCards(Deck deck) {
         if (this.hand == null) {
             this.hand = getHand();
         }
         for (int i = 0; i < hand.length; i++) {
-            if (hand[i] == null) {
-                Card card = deck.deal();
-                if (card != null) {
-                    hand[i] = card;
-                }
-                break;
+            Card card = deck.deal();
+            if (card != null) {
+                hand[i] = card;
+            }
+
+        }
+        return hand;
+    }
+
+    /**
+     * Updates points based on the bet and the hand values of other players.
+     *
+     * @param betPoints the points to bet
+     * @param otherPlayers the list of other players
+     * @return the list of players with updated points, including this player
+     */
+    public List<Player> updatePoints(int betPoints, List<Player> otherPlayers) {
+        int netPoints = 0;
+        int handValue = this.getHandValue();
+
+        for (Player other : otherPlayers) {
+            if (this == other) continue;
+
+            int otherHandValue = other.getHandValue();
+            if (handValue > otherHandValue) {
+                netPoints += betPoints;
+                other.changePoints(-betPoints);
+            } else if (handValue < otherHandValue) {
+                netPoints -= betPoints;
+                other.changePoints(betPoints);
             }
         }
+
+        this.changePoints(netPoints);
+
+        // Include this player in the list of updated players
+        List<Player> allPlayers = new ArrayList<>(otherPlayers);
+        if (!allPlayers.contains(this)) {
+            allPlayers.add(this);
+        }
+
+        return allPlayers;
     }
+
 
     /**
      * Calculates and returns the player's age based on their date of birth.

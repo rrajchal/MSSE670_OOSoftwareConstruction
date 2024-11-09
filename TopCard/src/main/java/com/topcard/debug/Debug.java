@@ -31,7 +31,7 @@ public class Debug {
      *
      * @param message the debug message to log
      */
-    public static void log(String message) {
+    public static void info(String message) {
         if (debugMode) {
             System.out.println("DEBUG: " + message);
         }

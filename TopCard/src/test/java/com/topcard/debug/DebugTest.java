@@ -3,8 +3,6 @@ package com.topcard.debug;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-import com.topcard.debug.Debug;
-
 /**
  * This test class tests displays of messages in different colors
  */
@@ -19,26 +17,26 @@ class DebugTest {
     }
 
     @Test
-    void testLog() {
+    void testInfo() {
         Debug.setDebugMode(true);
-        Debug.log("This is a debug message.");
+        Debug.info("This is a debug message.");
     }
 
     @Test
     void testWarn() {
         Debug.setDebugMode(true);
-        Debug.log("Before warn: Text in default color.");
+        Debug.info("Before warn: Text in default color.");
         Debug.warn("This is a warning message.");
-        Debug.log("After warn: Text in default color.");
+        Debug.info("After warn: Text in default color.");
 
     }
 
     @Test
     void testError() {
         Debug.setDebugMode(true);
-        Debug.log("Before warn: Text in default color.");
+        Debug.info("Before warn: Text in default color.");
         Debug.error("This is an error message.");
-        Debug.log("After warn: Text in default color.");
+        Debug.info("After warn: Text in default color.");
     }
 
     // Helper method to access the private debugMode field

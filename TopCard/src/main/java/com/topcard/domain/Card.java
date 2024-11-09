@@ -34,32 +34,35 @@ public class Card {
 
     /**
      * The Rank enum represents the possible ranks of a playing card.
-     * Each rank has an associated value.
+     * Each rank has an associated value and precedence.
      */
     public enum Rank {
-        ACE(1),
-        TWO(2),
-        THREE(3),
-        FOUR(4),
-        FIVE(5),
-        SIX(6),
-        SEVEN(7),
-        EIGHT(8),
-        NINE(9),
-        TEN(10),
-        JACK(10),
-        QUEEN(10),
-        KING(10);
+        ACE(1, 13),
+        TWO(2, 12),
+        THREE(3, 11),
+        FOUR(4, 10),
+        FIVE(5, 9),
+        SIX(6, 8),
+        SEVEN(7, 7),
+        EIGHT(8, 6),
+        NINE(9, 5),
+        TEN(10, 4),
+        JACK(10, 3),
+        QUEEN(10, 2),
+        KING(10, 1);
 
         private final int value;
+        private final int precedence;
 
         /**
-         * Constructs a new Rank with the specified value.
+         * Constructs a new Rank with the specified value and precedence.
          *
          * @param value the value of the rank
+         * @param precedence the precedence of the rank
          */
-        Rank(int value) {
+        Rank(int value, int precedence) {
             this.value = value;
+            this.precedence = precedence;
         }
 
         /**
@@ -70,6 +73,31 @@ public class Card {
         public int getValue() {
             return value;
         }
+
+        /**
+         * Returns the precedence of the rank.
+         *
+         * @return the precedence of the rank
+         */
+        public int getPrecedence() {
+            return precedence;
+        }
+    }
+
+    /**
+     * Calculates and returns the total value of the given array of cards.
+     *
+     * @param cards the array of cards
+     * @return the total value of the cards
+     */
+    public int getHandValue(Card[] cards) {
+        int totalValue = 0;
+        for (Card card : cards) {
+            if (card != null) {
+                totalValue += card.getRank().getValue();
+            }
+        }
+        return totalValue;
     }
 
     /**
@@ -112,5 +140,4 @@ public class Card {
     public int hashCode() {
         return Objects.hash(suit, rank);
     }
-
 }
