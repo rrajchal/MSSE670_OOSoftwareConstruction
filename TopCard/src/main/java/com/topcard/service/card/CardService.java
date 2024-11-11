@@ -44,6 +44,18 @@ public class CardService implements ICardService {
         return deck.getRemainingCards();
     }
 
+    /**
+     * Calculates the value of the given card
+     *
+     * @param cards the cards in hand
+     * @return the value of the card
+     */
+    @Override
+    public int getCardsValue(Card[] cards) {
+        // Card object has the function.
+        return cards[0].getCardsValue(cards);
+    }
+
     @Override
     public boolean isDeckEmpty() {
         return deck.getRemainingCards() == 0;

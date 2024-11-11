@@ -11,8 +11,12 @@ import java.util.Objects;
  * Subject: MSSE 670 Object Oriented Software construction
  */
 public class Card {
-    private final Suit suit;
-    private final Rank rank;
+    private Suit suit;
+    private Rank rank;
+
+    public Card() {
+
+    }
 
     /**
      * Constructs a new Card with the specified suit and rank.
@@ -85,17 +89,29 @@ public class Card {
     }
 
     /**
+     * Calculates the value of the given card
+     *
+     * @param card
+     * @return the value of the card
+     */
+    public int getCardValue(Card card) {
+        int totalValue = 0;
+        if (card != null) {
+            totalValue += card.getRank().getValue();
+        }
+        return totalValue;
+    }
+
+    /**
      * Calculates and returns the total value of the given array of cards.
      *
      * @param cards the array of cards
      * @return the total value of the cards
      */
-    public int getHandValue(Card[] cards) {
+    public int getCardsValue(Card[] cards) {
         int totalValue = 0;
         for (Card card : cards) {
-            if (card != null) {
-                totalValue += card.getRank().getValue();
-            }
+            totalValue += getCardValue(card);
         }
         return totalValue;
     }

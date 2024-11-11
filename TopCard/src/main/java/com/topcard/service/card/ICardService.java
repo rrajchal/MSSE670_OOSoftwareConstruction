@@ -48,6 +48,14 @@ public interface ICardService {
     int getRemainingCards();
 
     /**
+     * Calculates the value of the given card
+     *
+     * @param cards the cards in hand
+     * @return the value of the card
+     */
+    int getCardsValue(Card[] cards);
+
+    /**
      * Checks if the deck is empty.
      *
      * @return true if the deck is empty, false otherwise

@@ -50,4 +50,19 @@ public class CardTest {
         int total30Points = Card.Rank.TEN.getValue() + Card.Rank.JACK.getValue() + Card.Rank.QUEEN.getValue();
         assertEquals(30, total30Points);
     }
+
+    @Test
+    public void totalValueOfCards() {
+        Card card = new Card();
+        Card card1 = new Card(Card.Suit.HEARTS, Card.Rank.ACE);
+        Card card2 = new Card(Card.Suit.HEARTS, Card.Rank.TWO);
+        Card card3 = new Card(Card.Suit.HEARTS, Card.Rank.THREE);
+        Card[] cards = {card1, card2, card3};
+
+        assertEquals(1, card.getCardValue(card1));
+        assertEquals(2, card.getCardValue(card2));
+        assertEquals(3, card.getCardValue(card3));
+        assertEquals(6, card.getCardsValue(cards));
+
+    }
 }

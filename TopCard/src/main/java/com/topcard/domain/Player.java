@@ -196,13 +196,8 @@ public class Player {
      * @return the total value of the hand
      */
     public int getHandValue() {
-        int totalValue = 0;
-        for (Card card : hand) {
-            if (card != null) {
-                totalValue += card.getRank().getValue();
-            }
-        }
-        return totalValue;
+        Card card = new Card();
+        return card.getCardsValue(hand);
     }
 
     /**
