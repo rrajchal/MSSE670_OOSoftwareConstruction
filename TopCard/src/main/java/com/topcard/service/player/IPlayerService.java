@@ -46,6 +46,13 @@ public interface IPlayerService {
     Player getPlayerById(int playerId);
 
     /**
+     *
+     * @param userName the username of the player to retrieve
+     * @return the player with the specified username
+     */
+    Player getPlayerByUserName(String userName);
+
+    /**
      * Adds or deducts points to a player's score.
      * Players gain points when they win, lose when lost
      * Also, player can buy points

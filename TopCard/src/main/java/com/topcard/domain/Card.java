@@ -135,7 +135,7 @@ public class Card {
     }
 
     /**
-     * Returns a string representation of the card in the format "RANK OF SUIT".
+     * Returns a string representation of the card in the format "RANK OF SUIT", like ACE OF HEART, TWO OF HEARTS.
      *
      * @return a string representation of the card
      */

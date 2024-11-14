@@ -1,4 +1,1 @@
-1,mickey,password,Mickey,Mouse,1990-01-01,80,false
-2,donald,password,Donald,Duck,1995-06-15,100,false
-3,michael,password,Michael,Smith,1985-11-25,110,false
-4,rajesh,password,Rajesh,Rajchal,1980-04-10,110,false
+1,mickey,password,Mickey,Mouse,1990-01-01,100,false

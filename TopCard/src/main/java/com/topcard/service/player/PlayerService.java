@@ -91,6 +91,29 @@ public class PlayerService implements IPlayerService {
     }
 
     @Override
+    public Player getPlayerByUserName(String userName) {
+        Player player = null;
+        try (BufferedReader reader = new BufferedReader(new FileReader(ID_FILE_PATH))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split("[,\\s]+");
+                String existingUserName = parts[1].trim();
+                if (existingUserName.equals(userName)) {
+                    player = new Player(parts[1], parts[2], parts[3], parts[4], LocalDate.parse(parts[5]));
+                    player.setPlayerId(Integer.parseInt(parts[0].trim()));
+                    player.setPoints(Integer.parseInt(parts[6]));
+                    player.setAdmin(Boolean.parseBoolean(parts[7]));
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            throw new TopCardException("Error reading player ID file", e);
+        }
+        return player;
+    }
+
+
+    @Override
     public void changePoints(int playerId, int points) {
         Player player = getPlayerById(playerId);
         if (player != null) {
