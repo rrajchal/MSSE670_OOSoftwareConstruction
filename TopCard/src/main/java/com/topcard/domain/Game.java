@@ -2,6 +2,8 @@ package com.topcard.domain;
 
 import com.topcard.debug.Debug;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +16,11 @@ import java.util.List;
  * Subject: MSSE 670 Object Oriented Software construction
  * </p>
  */
-public class Game {
+public class Game implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 3L;
+
     private final Deck deck;
     private final List<Player> players;
 

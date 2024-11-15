@@ -1,6 +1,9 @@
 package com.topcard.domain;
 
 import com.topcard.debug.Debug;
+
+import java.io.Serial;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
@@ -15,7 +18,11 @@ import java.util.List;
  * Subject: MSSE 670 Object Oriented Software Construction
  * </p>
  */
-public class Player {
+public class Player implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 4L;
+
     private int playerId;
     private String username;
     private String password;

@@ -1,5 +1,7 @@
 package com.topcard.domain;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -10,7 +12,11 @@ import java.util.Objects;
  * Date: 11/03/2024
  * Subject: MSSE 670 Object Oriented Software construction
  */
-public class Card {
+public class Card implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+
     private Suit suit;
     private Rank rank;
 
@@ -91,7 +97,7 @@ public class Card {
     /**
      * Calculates the value of the given card
      *
-     * @param card
+     * @param card A Card
      * @return the value of the card
      */
     public int getCardValue(Card card) {

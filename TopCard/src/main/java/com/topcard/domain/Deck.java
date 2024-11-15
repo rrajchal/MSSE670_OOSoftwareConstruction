@@ -2,6 +2,8 @@ package com.topcard.domain;
 
 import com.topcard.debug.Debug;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -13,7 +15,11 @@ import java.util.Collections;
  * Date: 10/27/2024
  * Subject: MSSE 670 Object Oriented Software construction
  */
-public class Deck {
+public class Deck implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 2L;
+
     private final Card[] cards; // There will be exactly 52 cards
     /**
      * The index of the next card to be dealt from the deck. This variable tacks the position of the next card to be drawn.
