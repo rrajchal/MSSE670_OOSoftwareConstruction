@@ -4,6 +4,17 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+# Ignore .ser files 
+*.ser 
+
+# Ignore .class files 
+
+*.class 
+
+# Ignore temporary files 
+*.tmp 
+*.log
+
 ### IntelliJ IDEA ###
 .idea/
 .idea/modules.xml
