@@ -3,7 +3,6 @@ package com.topcard.service.game;
 import com.topcard.domain.Card;
 import com.topcard.domain.Game;
 import com.topcard.domain.Player;
-import com.topcard.service.card.CardService;
 import com.topcard.service.player.PlayerService;
 
 import java.util.List;
@@ -13,8 +12,10 @@ public class GameService implements IGameService {
     private final PlayerService playerService;
 
     public GameService(List<Player> players) {
-        this.game = new Game(players);
         this.playerService = new PlayerService();
+        addPlayers(players);
+        List<Player> updatedPlayers = updateExistingPlayers(players);
+        this.game = new Game(updatedPlayers);
     }
 
     @Override
@@ -33,8 +34,15 @@ public class GameService implements IGameService {
     }
 
     @Override
+    public void dealCards() {
+        game.dealCards();
+    }
+
+    @Override
     public List<Player> executeBettingRound(int points) {
-        return game.betAndUpdatePlayerPoints(points, game.getPlayers());
+        List<Player> updatedPlayers = game.betAndUpdatePlayerPoints(points, game.getPlayers());
+        updateProfiles(updatedPlayers);
+        return updatedPlayers;
     }
 
     @Override
@@ -57,5 +65,30 @@ public class GameService implements IGameService {
     @Override
     public void displayWinners(List<Player> winners) {
         game.displayWinners(winners);
+    }
+
+    /**
+     * Add players if they are already not in data
+     * @param players players to be added to the data if they don't exist
+     */
+    private void addPlayers(List<Player> players) {
+        playerService.addPlayers(players);
+    }
+
+    /**
+     * Updates the points of existing players based on the data.
+     * If a player with the same username is found in the data, their points are updated.
+     *
+     * @param players the list of players to be checked and updated
+     * @return the list of players with updated points
+     */
+    private List<Player> updateExistingPlayers(List<Player> players) {
+        for (Player player : players) {
+            Player existingPlayer = playerService.getPlayerByUsername(player.getUsername());
+            if (existingPlayer != null) {
+                player.setPoints(existingPlayer.getPoints());
+            }
+        }
+        return players;
     }
 }

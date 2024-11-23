@@ -83,9 +83,9 @@ public class Game implements Serializable {
      */
     public void showHand() {
         for (Player player : players) {
-            System.out.println("Player " + player.getFirstName() + " has ");
+            Debug.info("Player " + player.getFirstName() + " has ");
             player.showHand();
-            System.out.println("Total Score: " + player.getHandValue());
+            Debug.info("Total Score: " + player.getHandValue());
         }
     }
 
@@ -190,6 +190,6 @@ public class Game implements Serializable {
      * @return the list of players
      */
     public List<Player> getPlayers() {
-        return players;
+        return this.players;
     }
 }

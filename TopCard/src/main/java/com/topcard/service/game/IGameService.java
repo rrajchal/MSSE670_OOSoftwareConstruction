@@ -8,6 +8,9 @@ import java.util.List;
  * The IGameService interface defines the contract for the GameService.
  * It includes methods for starting the game, dealing cards, executing betting rounds,
  * determining winners, updating player profiles, and displaying winners.
+ * <p>
+ *  Author: Rajesh Rajchal
+ *  Date: 11/21/2024
  */
 public interface IGameService {
 
@@ -29,8 +32,14 @@ public interface IGameService {
     void showHands();
 
     /**
+     * Deal cards to players
+     */
+    void dealCards();
+
+    /**
      * Executes a betting round for the given players.
-     *
+     * <p>
+     * Must start game (startGame()) first before calling this function
      * The first player in the list is treated as the main player who places the bet,
      * and the points are updated based on the hand values of all players.
      *

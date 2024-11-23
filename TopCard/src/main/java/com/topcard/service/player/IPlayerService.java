@@ -50,7 +50,7 @@ public interface IPlayerService {
      * @param userName the username of the player to retrieve
      * @return the player with the specified username
      */
-    Player getPlayerByUserName(String userName);
+    Player getPlayerByUsername(String userName);
 
     /**
      * Adds or deducts points to a player's score.

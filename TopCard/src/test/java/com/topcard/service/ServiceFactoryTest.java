@@ -10,16 +10,13 @@ import com.topcard.service.game.GameService;
 import com.topcard.service.game.IGameService;
 import com.topcard.service.player.IPlayerService;
 import com.topcard.service.player.PlayerService;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.lang.reflect.Method;
 import java.time.LocalDate;
 import java.util.List;
 
-/**
- * Unit tests for the ServiceFactory class.
- */
 public class ServiceFactoryTest {
 
     @Test
@@ -32,48 +29,45 @@ public class ServiceFactoryTest {
 
     @Test
     public void testCreatePlayerService() {
-        IPlayerService playerService = ServiceFactory.createPlayerService();
+        IPlayerService playerService = ServiceFactory.createService(PlayerService.class);
         assertNotNull(playerService);
         assertInstanceOf(PlayerService.class, playerService);
     }
 
     @Test
     public void testCreateCardService() {
-        ICardService cardService = ServiceFactory.createCardService();
+        ICardService cardService = ServiceFactory.createService(CardService.class);
         assertNotNull(cardService);
         assertInstanceOf(CardService.class, cardService);
     }
 
     @Test
     public void testGameServiceStartGame() {
-        ICardService cardService = ServiceFactory.createCardService();
+        ICardService cardService = ServiceFactory.createService(CardService.class);
         List<Player> players = getPlayers();
         IGameService gameService = ServiceFactory.createGameService(players);
         assertNotNull(gameService);
         gameService.startGame();
 
         assertEquals(3, players.get(0).getHand().length);  // three cards each player
-
-        assertTrue(cardService.getCardsValue(players.get(0).getHand()) > 5); // Minimum total value of all three cards is at least 6.
-
+        assertTrue(cardService.getCardsValue(players.get(0).getHand()) > 2); // Minimum total value of all three cards is at least 3.
     }
 
     @Test
     public void testPlayerServiceAddPlayer() {
-        IPlayerService playerService = ServiceFactory.createPlayerService();
-        deleteAllPlayersData();  // remove all data
+        IPlayerService playerService = ServiceFactory.createService(PlayerService.class);
+        deleteAllPlayersData(playerService);  // remove all data
         Player player = new Player("mickey", "password", "Mickey", "Mouse", LocalDate.of(1990, 1, 1));
 
         playerService.addPlayer(player);  // added the player whose Id is 1.
-
-        Player playerInData = playerService.getPlayerByUserName("mickey");
+        Player playerInData = playerService.getPlayerByUsername("mickey");
 
         assertEquals(1, playerInData.getPlayerId());
     }
 
     @Test
     public void testCardServiceNotShuffled() {
-        ICardService cardService = ServiceFactory.createCardService();
+        ICardService cardService = ServiceFactory.createService(CardService.class);
         Card firstCard = cardService.drawCard();
         Card secondCard = cardService.drawCard();
         Card thirdCard = cardService.drawCard();
@@ -84,14 +78,14 @@ public class ServiceFactoryTest {
 
     @Test
     public void deleteAllPlayersData() {
-        IPlayerService playerService = ServiceFactory.createPlayerService();
+        IPlayerService playerService = ServiceFactory.createService(PlayerService.class);
         // Call the private method using reflection
         try {
             Method method = PlayerService.class.getDeclaredMethod("deleteAllPlayersData");
             method.setAccessible(true);
             method.invoke(playerService);
 
-            // Check if all data has been deleted List<Player> allPlayers
+            // Check if all data has been deleted
             List<Player> allPlayers = playerService.getAllPlayers();
             assertTrue(allPlayers.isEmpty());
         } catch (Exception e) {
@@ -102,5 +96,15 @@ public class ServiceFactoryTest {
     private List<Player> getPlayers() {
         PlayerTest playerTest = new PlayerTest();
         return playerTest.generatePlayers();
+    }
+
+    private void deleteAllPlayersData(IPlayerService playerService) {
+        try {
+            Method method = PlayerService.class.getDeclaredMethod("deleteAllPlayersData");
+            method.setAccessible(true);
+            method.invoke(playerService);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to delete all player data", e);
+        }
     }
 }

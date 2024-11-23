@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * The Player class represents a player in the TopCard game.
@@ -49,7 +50,6 @@ public class Player implements Serializable {
      * @param dateOfBirth the player's date of birth
      */
     public Player(String username, String password, String firstName, String lastName, LocalDate dateOfBirth) {
-        Debug.info("Player created");
         this.username = username;
         this.password = password;
         this.firstName = firstName;
@@ -58,6 +58,7 @@ public class Player implements Serializable {
         this.points = 100;    // Default when a player is created.
         this.isAdmin = false; // Default to false
         this.isLoggedIn = false;
+        Debug.info("Player created: " + this);
     }
 
     // Getters and setters
@@ -161,13 +162,12 @@ public class Player implements Serializable {
     }
 
     /**
-     * Changes points based on win or loss
-     * Also changes in data
-     * @param points
+     * Changes points based on win (add) or loss (subtract, adds a negative value)
+     * Also changes in data.
+     * @param points points to be added
      */
     public void changePoints(int points) {
         this.points += points;
-
     }
 
     public boolean checkAdminStatus() {
@@ -214,6 +214,9 @@ public class Player implements Serializable {
      */
     public Card drawCard(Deck deck) {
         Card card = deck.deal();
+        if (hand == null) {
+            hand = getHand();
+        }
         if (hand.length <= numOfCards) {
             hand[hand.length - 1] = card;
         }
@@ -264,7 +267,7 @@ public class Player implements Serializable {
             }
         }
 
-        this.changePoints(netPoints);
+        changePoints(netPoints);
 
         // Include this player in the list of updated players
         List<Player> allPlayers = new ArrayList<>(otherPlayers);
@@ -284,6 +287,43 @@ public class Player implements Serializable {
     public int getAge() {
         LocalDate today = LocalDate.now();
         return Period.between(dateOfBirth, today).getYears();
+    }
+
+    /**
+     * Checks if this player is equal to another object.
+     *
+     * @param o the object to compare this player against
+     * @return true if the given object represents a Player equivalent to this player, false otherwise
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true; // Check if both references point to the same object
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false; // Check if the other object is null or of a different class
+        }
+        Player player = (Player) o;
+        // Compare individual fields for equality
+        return playerId == player.playerId &&
+                points == player.points &&
+                isAdmin == player.isAdmin &&
+                isLoggedIn == player.isLoggedIn &&
+                username.equals(player.username) &&
+                firstName.equals(player.firstName) &&
+                lastName.equals(player.lastName) &&
+                dateOfBirth.equals(player.dateOfBirth);
+    }
+
+    /**
+     * Returns a hash code value for the player.
+     *
+     * @return a hash code value for this player based on its fields
+     */
+    @Override
+    public int hashCode() {
+        // Generate a hash code based on the object's fields
+        return Objects.hash(playerId, username, firstName, lastName, dateOfBirth, points, isAdmin, isLoggedIn);
     }
 
     /**

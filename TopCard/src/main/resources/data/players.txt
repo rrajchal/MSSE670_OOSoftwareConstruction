@@ -1,1 +1,0 @@
-1,mickey,password,Mickey,Mouse,1990-01-01,100,false

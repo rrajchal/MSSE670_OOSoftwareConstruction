@@ -41,10 +41,8 @@ public class PlayerTest {
         Player player = new Player("", "", "Michael", "Smith", LocalDate.of(1985, 11, 25));
         Deck deck = new Deck();
         deck.shuffle();
-
-        player.drawCards(deck);
-        player.drawCards(deck);
-        player.drawCards(deck);
+        Card oneCard = player.drawCard(deck);
+        Card[] cards = player.drawCards(deck);
 
         int nonNullCards = 0;
         for (Card card : player.getHand()) {
@@ -52,7 +50,8 @@ public class PlayerTest {
                 nonNullCards++;
             }
         }
-
+        assertTrue(oneCard.getCardValue(oneCard) > 0);
+        assertEquals(3, cards.length);
         assertEquals(3, nonNullCards);
     }
 

@@ -60,13 +60,26 @@ public class PlayerServiceTest {
 
     @Test
     public void testGetPlayerById() {
-        Player player = new Player("Donald", "duck123", "Donald", "Duck", LocalDate.of(1934, 6, 9));
+        Player player = new Player("donald", "duck123", "Donald", "Duck", LocalDate.of(1934, 6, 9));
         testPlayerService.addPlayer(player);
         int playerId = player.getPlayerId();
-
+        Player noPlayer = testPlayerService.getPlayerById(9999);
         Player fetchedPlayer = testPlayerService.getPlayerById(playerId);
         assertEquals(player.getUsername(), fetchedPlayer.getUsername());
         assertEquals(player.getFirstName(), fetchedPlayer.getFirstName());
+        assertNull(noPlayer);
+    }
+
+    @Test
+    public void testGetPlayerByUsername() {
+        Player player = new Player("donald", "duck123", "Donald", "Duck", LocalDate.of(1934, 6, 9));
+        testPlayerService.addPlayer(player);
+        Player noPlayer = testPlayerService.getPlayerByUsername("panda");
+        Player fetchedPlayer = testPlayerService.getPlayerByUsername("donald");
+        assertEquals(fetchedPlayer, player);
+
+        assertNull(noPlayer);
+
     }
 
     @Test
@@ -157,7 +170,7 @@ public class PlayerServiceTest {
         testPlayerService.updateProfiles(players);
 
         for (Player player : players) {
-            // Also, you can see the data changed in players.txt
+            // Also, you can see the data changed in players.csv
             assertEquals(99, testPlayerService.retrievePointForPlayer(player.getPlayerId()));
         }
     }
