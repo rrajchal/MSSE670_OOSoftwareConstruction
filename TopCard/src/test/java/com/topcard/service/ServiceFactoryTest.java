@@ -20,9 +20,9 @@ import java.util.List;
 public class ServiceFactoryTest {
 
     @Test
-    public void testCreateGameService() {
+    public void testCreateService() {
         List<Player> players = getPlayers();
-        IGameService gameService = ServiceFactory.createGameService(players);
+        IGameService gameService = ServiceFactory.createService(GameService.class, players);
         assertNotNull(gameService);
         assertInstanceOf(GameService.class, gameService);
     }
@@ -45,7 +45,7 @@ public class ServiceFactoryTest {
     public void testGameServiceStartGame() {
         ICardService cardService = ServiceFactory.createService(CardService.class);
         List<Player> players = getPlayers();
-        IGameService gameService = ServiceFactory.createGameService(players);
+        IGameService gameService = ServiceFactory.createService(GameService.class, players);
         assertNotNull(gameService);
         gameService.startGame();
 

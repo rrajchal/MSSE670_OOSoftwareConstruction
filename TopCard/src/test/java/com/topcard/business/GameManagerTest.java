@@ -2,7 +2,6 @@ package com.topcard.business;
 
 import com.topcard.domain.Card;
 import com.topcard.domain.Player;
-import com.topcard.service.player.IPlayerService;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -44,7 +43,7 @@ public class GameManagerTest {
 
         // Execute the betting round with a bet of 10 points
         int betPoints = 10;
-        List<Player> updatedPlayers = gameManager.executeBettingRound(betPoints);
+        gameManager.executeBettingRound(betPoints);
         // Check that the points are updated correctly
 
     }

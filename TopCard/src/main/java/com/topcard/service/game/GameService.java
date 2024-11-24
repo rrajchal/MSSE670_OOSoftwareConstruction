@@ -86,7 +86,8 @@ public class GameService implements IGameService {
         for (Player player : players) {
             Player existingPlayer = playerService.getPlayerByUsername(player.getUsername());
             if (existingPlayer != null) {
-                player.setPoints(existingPlayer.getPoints());
+                player.setPlayerId(existingPlayer.getPlayerId()); // preserve id
+                player.setPoints(existingPlayer.getPoints());     // preserve point
             }
         }
         return players;
