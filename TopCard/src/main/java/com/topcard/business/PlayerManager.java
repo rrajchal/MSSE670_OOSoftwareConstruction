@@ -4,6 +4,7 @@ import com.topcard.domain.Player;
 import com.topcard.service.factory.ServiceFactory;
 import com.topcard.service.player.IPlayerService;
 import com.topcard.service.player.PlayerService;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -131,6 +132,10 @@ public class PlayerManager {
      */
     public void updateProfiles(List<Player> players) {
         playerService.updateProfiles(players);
+    }
+
+    public boolean verifyPassword(String plainPassword, String encryptedPassword) {
+        return ((PlayerService)playerService).verifyPassword(plainPassword, encryptedPassword);
     }
 
     /**

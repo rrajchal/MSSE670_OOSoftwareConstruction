@@ -3,6 +3,7 @@ package com.topcard.service.player;
 import com.topcard.debug.Debug;
 import com.topcard.domain.Player;
 import com.topcard.exceptions.TopCardException;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -41,17 +42,19 @@ public class PlayerService implements IPlayerService {
     }
 
     public PlayerService() {
-
+        // Default constructor
     }
 
     @Override
     public void addPlayer(Player player) {
         if (getPlayerByUsername(player.getUsername()) == null) {
             player.setPlayerId(getNewId());
+            player.setUsername(player.getUsername().toLowerCase());
+            player.setPassword(encryptPassword(player.getPassword())); // Encrypt the password
             register(player);
             Debug.info("Player added: " + player);
         } else {
-            Debug.warn("Player already exists. No player added." );
+            Debug.warn("Player already exists. No player added.");
         }
     }
 
@@ -108,13 +111,20 @@ public class PlayerService implements IPlayerService {
         List<String> lines = readLinesFromFile();
         lines = lines.stream()
                 .map(line -> {
-                    if (splitLine(line)[1].equals(player.getUsername())) {
+                    String[] parts = splitLine(line);
+                    if (parts[0].equals(String.valueOf(player.getPlayerId()))) {
+                        if (!BCrypt.checkpw(player.getPassword(), parts[2])) {
+                            player.setPassword(encryptPassword(player.getPassword())); // Encrypt the password if it has changed
+                        } else {
+                            player.setPassword(parts[2]); // Keep the existing encrypted password
+                        }
                         return playerToCsvString(player);
                     }
                     return line;
                 })
                 .collect(Collectors.toList());
         writeLinesToFile(lines, false);
+        Debug.info("Player updated: " + player);
     }
 
     @Override
@@ -147,6 +157,27 @@ public class PlayerService implements IPlayerService {
             return player.getPoints();
         }
         throw new TopCardException("Player not found with ID: " + playerId);
+    }
+
+    /**
+     * Encrypts a password using BCrypt. This way the data file will have encrypted text
+     *
+     * @param password the plain text password
+     * @return the encrypted password
+     */
+    private String encryptPassword(String password) {
+        return BCrypt.hashpw(password, BCrypt.gensalt());
+    }
+
+    /**
+     * Verifies a plain text password against an encrypted password.
+     *
+     * @param plainPassword the plain text password
+     * @param encryptedPassword the encrypted password
+     * @return true if the password matches, false otherwise
+     */
+    public boolean verifyPassword(String plainPassword, String encryptedPassword) {
+        return BCrypt.checkpw(plainPassword, encryptedPassword);
     }
 
     /**

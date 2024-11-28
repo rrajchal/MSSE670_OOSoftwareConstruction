@@ -1,5 +1,7 @@
 plugins {
     id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.10'
 }
 
 group 'com.topcard'
@@ -14,8 +16,22 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
     testImplementation 'junit:junit:4.13.2'  // JUnit 4 dependency for Test Suite
     testRuntimeOnly 'org.junit.vintage:junit-vintage-engine' // JUnit Vintage engine for running JUnit 4 tests for Test Suite
+
+    implementation 'org.openjfx:javafx-controls:17'
+    implementation 'org.openjfx:javafx-fxml:17'
+
+    implementation 'org.mindrot:jbcrypt:0.4'  // For encryption and decryption
 }
 
 test {
     useJUnitPlatform()
+}
+
+javafx {
+    version = '17'
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
+}
+
+application {
+    mainClass = 'com.topcard.app.MainApp'
 }

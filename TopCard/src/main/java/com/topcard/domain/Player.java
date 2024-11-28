@@ -58,10 +58,8 @@ public class Player implements Serializable {
         this.points = 100;    // Default when a player is created.
         this.isAdmin = false; // Default to false
         this.isLoggedIn = false;
-        Debug.info("Player created: " + this);
     }
 
-    // Getters and setters
     // Getters
     public int getPlayerId() {
         return playerId;

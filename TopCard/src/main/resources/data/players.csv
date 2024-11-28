@@ -1,4 +1,5 @@
-1,mickey,password,Mickey,Mouse,1990-01-01,80,false
-2,donald,password,Donald,Duck,1995-06-15,100,false
-3,michael,password,Michael,Smith,1985-11-25,120,false
-4,rajesh,password,Rajesh,Rajchal,1980-04-10,100,false
+1,mickey,$2a$10$Og9XgjW8hH7a46pDCeQVh.MqxBx6qjT5gNpIhwij6YoLxYdDhjy5u,Mickey,Mouse,1928-11-18,100,true
+2,minnie,$2a$10$4HmR0l79kdK.vliBRic0MOqHMHPoM2ntuV1NcGzFkhGYuubXOLg.i,Minnie,Mouse1,1928-11-18,102,false
+3,donald,$2a$10$EUCyjnBI.JibfkA0tdmSaOmWukXaiBneyoqD8yhaTeRRMl2G/9hcy,Donald,Duck,1934-06-09,100,false
+4,goofy,$2a$10$Lml6yC2QinDHRk8UngpeM.2sahKWNozp4NWOEyblpBEPpV2GukQT.,Goofy,Goof,1932-05-25,100,false
+5,daisy,$2a$10$IlPUugtVIiy1sQ2SPgvIa.HQmsWBICjajzqpkmNqtOtu/CP0aCnwm,Daisy,Duck,1940-01-01,100,false

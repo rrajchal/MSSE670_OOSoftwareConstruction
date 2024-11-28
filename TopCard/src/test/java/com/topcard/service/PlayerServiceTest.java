@@ -90,9 +90,9 @@ public class PlayerServiceTest {
     }
 
     void createSamplePlayerData() {
-        Player mickey = new Player("Mickey", "mouse123", "Mickey", "Mouse", LocalDate.of(1928, 11, 18));
-        Player minnie = new Player("Minnie", "mouse123", "Minnie", "Mouse", LocalDate.of(1928, 11, 18));
-        Player donald = new Player("Donald", "duck123", "Donald", "Duck", LocalDate.of(1934, 6, 9));
+        Player mickey = new Player("mickey", "mouse123", "Mickey", "Mouse", LocalDate.of(1928, 11, 18));
+        Player minnie = new Player("minnie", "mouse123", "Minnie", "Mouse", LocalDate.of(1928, 11, 18));
+        Player donald = new Player("donald", "duck123", "Donald", "Duck", LocalDate.of(1934, 6, 9));
         Player goofy = new Player("Goofy", "goofy123", "Goofy", "Goof", LocalDate.of(1932, 5, 25));
         Player daisy = new Player("Daisy", "duck123", "Daisy", "Duck", LocalDate.of(1940, 1, 1));
         testPlayerService.addPlayer(mickey);
@@ -173,6 +173,14 @@ public class PlayerServiceTest {
             // Also, you can see the data changed in players.csv
             assertEquals(99, testPlayerService.retrievePointForPlayer(player.getPlayerId()));
         }
+    }
+
+    @Test
+    public void testEncryption() {
+        createSamplePlayerData();
+        Player retrievedPlayer = testPlayerService.getPlayerByUsername("mickey");
+        assertTrue(testPlayerService.verifyPassword("mouse123", retrievedPlayer.getPassword()));
+        assertNotEquals("mouse123", retrievedPlayer.getPassword());
     }
 
 }
