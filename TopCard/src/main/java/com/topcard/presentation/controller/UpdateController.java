@@ -52,6 +52,7 @@ public class UpdateController {
             updateView.getSearchButton().setVisible(false);
             updateView.getIsAdminCheckBox().setVisible(false);
         }
+        updateView.getUsernameField().setEnabled(false);
         updateView.getUpdateButton().addActionListener(e -> handleUpdate());
     }
 
@@ -83,6 +84,7 @@ public class UpdateController {
             updateView.getIsAdminCheckBox().setSelected(player.isAdmin());
             updateView.getMessageLabel().setText("");
         } else {
+            updateView.getIdField().setText("");
             updateView.getFirstNameField().setText("");
             updateView.getLastNameField().setText("");
             updateView.getUsernameField().setText("");
@@ -101,56 +103,13 @@ public class UpdateController {
      * It validates the input fields and updates the player information if all fields are valid.
      */
     private void handleUpdate() {
-        boolean isValid = true;
+        Object[] textFields = {updateView.getFirstNameField(), updateView.getLastNameField(),
+                updateView.getUsernameField(), updateView.getPasswordField(), updateView.getDateOfBirthField()};
 
-        // Validate fields
-        if (updateView.getFirstNameField().getText().trim().isEmpty()) {
-            updateView.getFirstNameField().setBackground(Color.PINK);
-            updateView.getFirstNameField().setToolTipText(Constants.REQUIRED);
-            isValid = false;
-        } else {
-            updateView.getFirstNameField().setBackground(Color.WHITE);
-        }
+        String[] errorMessages = { Constants.FIRST_NAME_CANNOT_HAVE_SPACES, Constants.LAST_NAME_CANNOT_HAVE_SPACES,
+                Constants.USERNAME_CANNOT_HAVE_SPACES, Constants.PASSWORD_CANNOT_HAVE_SPACES, Constants.REQUIRED};
 
-        if (updateView.getLastNameField().getText().trim().isEmpty()) {
-            updateView.getLastNameField().setBackground(Color.PINK);
-            updateView.getLastNameField().setToolTipText(Constants.REQUIRED);
-            isValid = false;
-        } else {
-            updateView.getLastNameField().setBackground(Color.WHITE);
-        }
-
-        if (updateView.getUsernameField().getText().trim().isEmpty()) {
-            updateView.getUsernameField().setBackground(Color.PINK);
-            updateView.getUsernameField().setToolTipText(Constants.REQUIRED);
-            isValid = false;
-        } else {
-            updateView.getUsernameField().setBackground(Color.WHITE);
-        }
-
-        if (updateView.getPasswordField().getPassword().length == 0) {
-            updateView.getPasswordField().setBackground(Color.PINK);
-            updateView.getPasswordField().setToolTipText(Constants.REQUIRED);
-            isValid = false;
-        } else {
-            updateView.getPasswordField().setBackground(Color.WHITE);
-        }
-
-        if (updateView.getDateOfBirthField().getText().trim().isEmpty()) {
-            updateView.getDateOfBirthField().setBackground(Color.PINK);
-            updateView.getDateOfBirthField().setToolTipText(Constants.REQUIRED);
-            isValid = false;
-        } else {
-            updateView.getDateOfBirthField().setBackground(Color.WHITE);
-        }
-
-        if (updateView.getPointsField().getText().trim().isEmpty()) {
-            updateView.getPointsField().setBackground(Color.PINK);
-            updateView.getPointsField().setToolTipText(Constants.REQUIRED);
-            isValid = false;
-        } else {
-            updateView.getPointsField().setBackground(Color.WHITE);
-        }
+        boolean isValid = Validation.validateFields(textFields, errorMessages);
 
         if (isValid) {
             // Validate date of birth format
@@ -159,7 +118,7 @@ public class UpdateController {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Constants.DATE_FORMAT);
                 dateOfBirth = LocalDate.parse(updateView.getDateOfBirthField().getText().trim(), formatter);
             } catch (DateTimeParseException ex) {
-                JOptionPane.showMessageDialog(updateView.getUpdateFrame(), Constants.INVALID_DATE,
+                JOptionPane.showMessageDialog(updateView, Constants.INVALID_DATE,
                         Constants.ERROR, JOptionPane.ERROR_MESSAGE);
                 return;
             }
@@ -176,7 +135,7 @@ public class UpdateController {
                 int points = Integer.parseInt(updateView.getPointsField().getText().trim());
                 updatedPlayer.setPoints(points);
             } catch (NumberFormatException ex) {
-                JOptionPane.showMessageDialog(updateView.getUpdateFrame(), Constants.INVALID_POINT, Constants.ERROR, JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(updateView, Constants.INVALID_POINT, Constants.ERROR, JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
@@ -186,8 +145,11 @@ public class UpdateController {
             }
 
             playerManager.updateProfile(updatedPlayer);
-            JOptionPane.showMessageDialog(updateView.getUpdateFrame(),
-                    "Player information updated successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(updateView, Constants.UPDATED, Constants.SUCCESS, JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(updateView, Constants.HOVER_MESSAGE, Constants.FAILED, JOptionPane.INFORMATION_MESSAGE);
         }
+
+        updateView.dispose();
     }
 }

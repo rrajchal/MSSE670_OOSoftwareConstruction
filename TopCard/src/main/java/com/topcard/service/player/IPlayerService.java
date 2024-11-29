@@ -20,8 +20,9 @@ public interface IPlayerService {
      * Adds a new player to the system.
      *
      * @param player the player to add
+     * @return true if a player is added; otherwise, false
      */
-    void addPlayer(Player player);
+    boolean addPlayer(Player player);
 
     /**
      * Adds players to the system.

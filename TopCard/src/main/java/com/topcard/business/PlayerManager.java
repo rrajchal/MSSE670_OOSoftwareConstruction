@@ -33,8 +33,8 @@ public class PlayerManager {
      *
      * @param player the player to add
      */
-    public void addPlayer(Player player) {
-        playerService.addPlayer(player);
+    public boolean addPlayer(Player player) {
+        return playerService.addPlayer(player);
     }
 
     /**

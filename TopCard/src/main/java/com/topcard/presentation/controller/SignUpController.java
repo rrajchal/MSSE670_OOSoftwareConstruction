@@ -5,7 +5,6 @@ import com.topcard.debug.Debug;
 import com.topcard.domain.Player;
 import com.topcard.presentation.view.SignUpView;
 
-import java.awt.Color;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.time.LocalDate;
@@ -62,56 +61,13 @@ public class SignUpController {
      * It validates the input fields and adds a new player if all fields are valid.
      */
     private void handleSignUp() {
-        boolean isValid = true;
+        Object[] textFields = {signUpView.getFirstNameField(), signUpView.getLastNameField(),
+                signUpView.getUsernameField(), signUpView.getPasswordField(), signUpView.getDateOfBirthField()};
 
-        // Validate fields
-        if (signUpView.getFirstNameField().getText().trim().isEmpty()) {
-            signUpView.getFirstNameField().setBackground(Color.PINK);
-            signUpView.getFirstNameField().setText(Constants.REQUIRED);
-            isValid = false;
-        } else {
-            signUpView.getFirstNameField().setBackground(Color.WHITE);
-        }
+        String[] errorMessages = { Constants.FIRST_NAME_CANNOT_HAVE_SPACES, Constants.LAST_NAME_CANNOT_HAVE_SPACES,
+                Constants.USERNAME_CANNOT_HAVE_SPACES, Constants.PASSWORD_CANNOT_HAVE_SPACES, Constants.REQUIRED};
 
-        if (signUpView.getLastNameField().getText().trim().isEmpty()) {
-            signUpView.getLastNameField().setBackground(Color.PINK);
-            signUpView.getLastNameField().setText(Constants.REQUIRED);
-            isValid = false;
-        } else {
-            signUpView.getLastNameField().setBackground(Color.WHITE);
-        }
-
-        if (signUpView.getUsernameField().getText().trim().isEmpty()) {
-            signUpView.getUsernameField().setBackground(Color.PINK);
-            signUpView.getUsernameField().setText(Constants.REQUIRED);
-            isValid = false;
-        } else {
-            signUpView.getUsernameField().setBackground(Color.WHITE);
-        }
-
-        if (new String(signUpView.getPasswordField().getPassword()).trim().isEmpty()) {
-            signUpView.getPasswordField().setBackground(Color.PINK);
-            signUpView.getPasswordField().setText("");
-            isValid = false;
-        } else {
-            signUpView.getPasswordField().setBackground(Color.WHITE);
-        }
-
-        if (new String(signUpView.getRetypePasswordField().getPassword()).trim().isEmpty()) {
-            signUpView.getRetypePasswordField().setBackground(Color.PINK);
-            signUpView.getRetypePasswordField().setText("");
-            isValid = false;
-        } else {
-            signUpView.getRetypePasswordField().setBackground(Color.WHITE);
-        }
-
-        if (signUpView.getDateOfBirthField().getText().trim().isEmpty()) {
-            signUpView.getDateOfBirthField().setBackground(Color.PINK);
-            signUpView.getDateOfBirthField().setText(Constants.REQUIRED);
-            isValid = false;
-        } else {
-            signUpView.getDateOfBirthField().setBackground(Color.WHITE);
-        }
+        boolean isValid = Validation.validateFields(textFields, errorMessages);
 
         if (isValid) {
             // Check if passwords match
@@ -143,7 +99,7 @@ public class SignUpController {
             );
 
             playerManager.addPlayer(newPlayer);
-            JOptionPane.showMessageDialog(signUpView.getSignUpDialog(), "Sign Up Successful", "Success", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(signUpView.getSignUpDialog(), Constants.SIGN_UP_SUCCESS, Constants.SUCCESS, JOptionPane.INFORMATION_MESSAGE);
             signUpView.getSignUpDialog().dispose(); // Close the SignUpView
             loginFrame.setEnabled(true); // Re-enable the login frame
         }

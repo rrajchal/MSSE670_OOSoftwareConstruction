@@ -10,7 +10,8 @@ import com.topcard.presentation.view.SignUpView;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JTextField;
 
 /**
  * This class represents the controller for the login view.
@@ -22,7 +23,7 @@ import javax.swing.*;
  * Subject: MSSE 670 Object Oriented Software Construction
  * </p>
  */
-public class LoginController {
+public class LoginController extends JFrame {
 
     private final LoginView loginView;
     /**
@@ -32,6 +33,7 @@ public class LoginController {
      */
     public LoginController(LoginView loginView) {
         this.loginView = loginView;
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         initController();
     }
 

@@ -17,13 +17,12 @@ import java.awt.Insets;
  *
  * <p>
  * Author: Rajesh Rajchal
- * Date: 12/01/2024
+ * Date: 11/30/2024
  * Subject: MSSE 670 Object Oriented Software Construction
  * </p>
  */
-public class UpdateView {
+public class UpdateView extends JFrame {
 
-    private JFrame updateFrame;
     private JTextField searchField;
     private JButton searchButton;
     private JLabel messageLabel;
@@ -41,6 +40,10 @@ public class UpdateView {
      * Constructor to initialize the update view.
      */
     public UpdateView() {
+        setTitle("Update Player");
+        setSize(600, 500);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        setLocationRelativeTo(null);
         initComponents();
     }
 
@@ -48,11 +51,6 @@ public class UpdateView {
      * Initializes the components of the update panel and sets up the layout.
      */
     private void initComponents() {
-        updateFrame = new JFrame("Update Player");
-        updateFrame.setSize(600, 500);
-        updateFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        updateFrame.setLocationRelativeTo(null); // Center the frame on the monitor
-
         JPanel updatePanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
@@ -92,35 +90,35 @@ public class UpdateView {
         gbc.gridy = 3;
         updatePanel.add(idField, gbc);
 
-        JLabel firstNameLabel = new JLabel("First Name:");
-        gbc.gridx = 0;
-        gbc.gridy = 4;
-        updatePanel.add(firstNameLabel, gbc);
-
-        firstNameField = new JTextField(15);
-        gbc.gridx = 1;
-        gbc.gridy = 4;
-        updatePanel.add(firstNameField, gbc);
-
-        JLabel lastNameLabel = new JLabel("Last Name:");
-        gbc.gridx = 0;
-        gbc.gridy = 5;
-        updatePanel.add(lastNameLabel, gbc);
-
-        lastNameField = new JTextField(15);
-        gbc.gridx = 1;
-        gbc.gridy = 5;
-        updatePanel.add(lastNameField, gbc);
-
         JLabel usernameLabel = new JLabel("Username:");
         gbc.gridx = 0;
-        gbc.gridy = 6;
+        gbc.gridy = 4;
         updatePanel.add(usernameLabel, gbc);
 
         usernameField = new JTextField(15);
         gbc.gridx = 1;
-        gbc.gridy = 6;
+        gbc.gridy = 4;
         updatePanel.add(usernameField, gbc);
+
+        JLabel firstNameLabel = new JLabel("First Name:");
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        updatePanel.add(firstNameLabel, gbc);
+
+        firstNameField = new JTextField(15);
+        gbc.gridx = 1;
+        gbc.gridy = 5;
+        updatePanel.add(firstNameField, gbc);
+
+        JLabel lastNameLabel = new JLabel("Last Name:");
+        gbc.gridx = 0;
+        gbc.gridy = 6;
+        updatePanel.add(lastNameLabel, gbc);
+
+        lastNameField = new JTextField(15);
+        gbc.gridx = 1;
+        gbc.gridy = 6;
+        updatePanel.add(lastNameField, gbc);
 
         JLabel passwordLabel = new JLabel("Password:");
         gbc.gridx = 0;
@@ -164,14 +162,10 @@ public class UpdateView {
         gbc.anchor = GridBagConstraints.CENTER;
         updatePanel.add(updateButton, gbc);
 
-        updateFrame.add(updatePanel);
+        add(updatePanel);
     }
 
     // Getters for the components
-    public JFrame getUpdateFrame() {
-        return updateFrame;
-    }
-
     public JTextField getSearchField() {
         return searchField;
     }
@@ -218,9 +212,5 @@ public class UpdateView {
 
     public JButton getUpdateButton() {
         return updateButton;
-    }
-
-    public void show() {
-        updateFrame.setVisible(true);
     }
 }

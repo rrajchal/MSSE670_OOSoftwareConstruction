@@ -3,9 +3,7 @@ package com.topcard.presentation.view;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.awt.*;
 
 /**
  * This class represents the view for the options screen.
@@ -17,7 +15,7 @@ import java.awt.Insets;
  * Subject: MSSE 670 Object Oriented Software Construction
  * </p>
  */
-public class OptionsView {
+public class OptionsView extends JFrame {
 
     // Frame for displaying the options view
     private JFrame optionsFrame;

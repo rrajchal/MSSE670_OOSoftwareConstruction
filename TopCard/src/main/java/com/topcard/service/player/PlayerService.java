@@ -46,15 +46,17 @@ public class PlayerService implements IPlayerService {
     }
 
     @Override
-    public void addPlayer(Player player) {
+    public boolean addPlayer(Player player) {
         if (getPlayerByUsername(player.getUsername()) == null) {
             player.setPlayerId(getNewId());
             player.setUsername(player.getUsername().toLowerCase());
             player.setPassword(encryptPassword(player.getPassword())); // Encrypt the password
             register(player);
             Debug.info("Player added: " + player);
+            return true;
         } else {
             Debug.warn("Player already exists. No player added.");
+            return false;
         }
     }
 
