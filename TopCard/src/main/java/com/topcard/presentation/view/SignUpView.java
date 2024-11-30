@@ -1,15 +1,9 @@
 package com.topcard.presentation.view;
 
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import com.topcard.presentation.controller.Constants;
+
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 
 /**
@@ -27,9 +21,6 @@ public class SignUpView {
     // Dialog for displaying the sign-up view
     private JDialog signUpDialog;
 
-    // Panel for organizing the sign-up components
-    private JPanel signUpPanel;
-
     // Text fields for user input
     private JTextField firstNameField;
     private JTextField lastNameField;
@@ -38,7 +29,9 @@ public class SignUpView {
     private JPasswordField retypePasswordField;
     private JTextField dateOfBirthField;
     private JTextField bonusPointField;
+    private JCheckBox termsCheckBox;
     private JButton signUpButton;
+    private JLabel loginLink;
 
     /**
      * Constructor to initialize the sign-up view.
@@ -52,13 +45,14 @@ public class SignUpView {
      */
     private void initComponents(JFrame parentFrame) {
         signUpDialog = new JDialog(parentFrame, "Sign Up", true);
-        signUpDialog.setSize(400, 400);
+        signUpDialog.setSize(450, 500);
         signUpDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         signUpDialog.setLocationRelativeTo(null); // Center the dialog on the monitor
 
-        signUpPanel = new JPanel(new GridBagLayout());
+        // Panel for organizing the sign-up components
+        JPanel signUpPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.insets = new Insets(10, 5, 10, 5); // Padding
 
         // First Name
         JLabel firstNameLabel = new JLabel("First Name:");
@@ -138,14 +132,38 @@ public class SignUpView {
         gbc.gridy = 6;
         signUpPanel.add(bonusPointField, gbc);
 
+        // Terms and Conditions Checkbox
+        termsCheckBox = new JCheckBox(Constants.I_AGREE_TERMS);
+        gbc.gridx = 0;
+        gbc.gridy = 7;
+        gbc.gridwidth = 2;
+        signUpPanel.add(termsCheckBox, gbc);
+        gbc.gridwidth = 1;
+
         // Sign Up button
         signUpButton = new JButton("Sign Up");
         gbc.gridx = 1;
-        gbc.gridy = 7;
+        gbc.gridy = 8;
         gbc.anchor = GridBagConstraints.CENTER;
         signUpPanel.add(signUpButton, gbc);
 
+        // Login link
+        loginLink = new JLabel(Constants.ALREADY_HAVE_ACCOUNT);
+        gbc.gridx = 0;
+        gbc.gridy = 9;
+        gbc.gridwidth = 2;
+        signUpPanel.add(loginLink, gbc);
+        gbc.gridwidth = 1;
+
         signUpDialog.add(signUpPanel);
+
+        loginLink.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                signUpDialog.dispose(); // Close the SignUpView
+                parentFrame.setEnabled(true); // Re-enable the login frame
+                parentFrame.toFront(); // Ensure the login frame stays on top
+            }
+        });
     }
 
     // Getters for the components
@@ -181,8 +199,16 @@ public class SignUpView {
         return bonusPointField;
     }
 
+    public JCheckBox getTermsCheckBox() {
+        return termsCheckBox;
+    }
+
     public JButton getSignUpButton() {
         return signUpButton;
+    }
+
+    public JLabel getLoginLink() {
+        return loginLink;
     }
 
     /**

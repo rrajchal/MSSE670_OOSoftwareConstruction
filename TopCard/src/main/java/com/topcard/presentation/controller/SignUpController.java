@@ -51,6 +51,7 @@ public class SignUpController {
             @Override
             public void windowClosing(WindowEvent e) {
                 loginFrame.setEnabled(true);
+                loginFrame.toFront(); // Ensure the login frame stays on top
             }
         });
         loginFrame.setEnabled(false); // Disable the login frame when SignUpView is active
@@ -61,11 +62,20 @@ public class SignUpController {
      * It validates the input fields and adds a new player if all fields are valid.
      */
     private void handleSignUp() {
-        Object[] textFields = {signUpView.getFirstNameField(), signUpView.getLastNameField(),
-                signUpView.getUsernameField(), signUpView.getPasswordField(), signUpView.getDateOfBirthField()};
+        if (!signUpView.getTermsCheckBox().isSelected()) {
+            JOptionPane.showMessageDialog(signUpView.getSignUpDialog(), Constants.AGREEMENT_CHECKBOX_MSG, Constants.AGREEMENT_REQUIRED, JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
-        String[] errorMessages = { Constants.FIRST_NAME_CANNOT_HAVE_SPACES, Constants.LAST_NAME_CANNOT_HAVE_SPACES,
-                Constants.USERNAME_CANNOT_HAVE_SPACES, Constants.PASSWORD_CANNOT_HAVE_SPACES, Constants.REQUIRED};
+        Object[] textFields = {
+                signUpView.getFirstNameField(), signUpView.getLastNameField(),
+                signUpView.getUsernameField(), signUpView.getPasswordField(), signUpView.getDateOfBirthField()
+        };
+
+        String[] errorMessages = {
+                Constants.FIRST_NAME_CANNOT_HAVE_SPACES, Constants.LAST_NAME_CANNOT_HAVE_SPACES,
+                Constants.USERNAME_CANNOT_HAVE_SPACES, Constants.PASSWORD_CANNOT_HAVE_SPACES, Constants.REQUIRED
+        };
 
         boolean isValid = Validation.validateFields(textFields, errorMessages);
 

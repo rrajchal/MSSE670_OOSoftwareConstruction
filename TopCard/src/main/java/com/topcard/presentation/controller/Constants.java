@@ -20,4 +20,8 @@ public class Constants {
     public static final String UPDATED = "Player information updated successfully";
     public static final String HOVER_MESSAGE = "Error: Hover on the textbox for detail";
     public static final String SIGN_UP_SUCCESS = "Sign Up Successful";
+    public static final String AGREEMENT_CHECKBOX_MSG = "Please agree to the Terms of Use and Privacy Policy to proceed.";
+    public static final String AGREEMENT_REQUIRED = "Terms Agreement Required";
+    public static final String I_AGREE_TERMS = "<html>I agree to the <a href='#'>Terms of Use</a> and <a href='#'>Privacy Policy</a>.</html>";
+    public static final String ALREADY_HAVE_ACCOUNT = "<html>Already have an account? <a href='#'>Login here</a></html>";
 }
