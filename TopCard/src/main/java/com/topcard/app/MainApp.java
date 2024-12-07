@@ -33,16 +33,13 @@ public class MainApp {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-
-
-
         // Set debug mode based on configuration file
         setDebugModeFromConfig();
 
         // Create the main application frame
         JFrame frame = new JFrame("TopCard Game");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(800, 600);
+        frame.setSize(1000, 800);
         frame.setResizable(false);
         frame.setLocationRelativeTo(null); // Center the frame on the monitor
 

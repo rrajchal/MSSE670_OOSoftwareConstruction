@@ -16,6 +16,9 @@ import javax.swing.*;
 import java.awt.Window;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 /**
  * This class represents the controller for the options view.
@@ -31,6 +34,8 @@ public class OptionsController {
 
     private final OptionsView optionsView;
     private final JDesktopPane desktopPane;
+
+    private Player player = null;
 
     /**
      * Constructor to initialize the options controller with the given options view.
@@ -55,7 +60,7 @@ public class OptionsController {
     private void initController(String username) {
         Debug.info("Initializing Option Controller");
         PlayerManager playerManager = new PlayerManager();
-        Player player = playerManager.getPlayerByUsername(username);
+        player = playerManager.getPlayerByUsername(username);
 
         if (player != null && player.isAdmin()) {
             optionsView.setAddPlayerButtonVisibility(true);
@@ -67,13 +72,19 @@ public class OptionsController {
         optionsView.getAddPlayerButton().addActionListener(e -> handleAddPlayer());
     }
 
+    /**
+     * Handles the event when the "Play Game" button is clicked.
+     * It initializes the JavaFX environment, retrieves a list of players, and starts the game view.
+     */
     private void handlePlayGame() {
         // Initialize JavaFX environment if not already initialized
         new JFXPanel();
         Platform.setImplicitExit(false);
+        List<Player> players = getThreeRandomPlayers();
+
         Platform.runLater(() -> {
             try {
-                GameView gameView = new GameView();
+                GameView gameView = new GameView(players);
                 Stage stage = new Stage();
                 gameView.start(stage);
             } catch (Exception e) {
@@ -81,6 +92,30 @@ public class OptionsController {
                 JOptionPane.showMessageDialog(optionsView, "Failed to start the game view.", "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
+    }
+
+    /**
+     * Retrieves a list of three random players excluding the authenticated user.
+     * The authenticated user is added as the first player.
+     *
+     * @return the list of four players (including the authenticated user)
+     */
+    private List<Player> getThreeRandomPlayers() {
+        PlayerManager playerManager = new PlayerManager();
+        List<Player> allPlayers = playerManager.getAllPlayers(); // Assuming this method exists
+        List<Player> selectedPlayers = new ArrayList<>();
+        selectedPlayers.add(player); // Add the logged-in player as the first player
+
+        // Randomly select three other players from the list
+        Random rand = new Random();
+        while (selectedPlayers.size() < 4) {
+            Player randomPlayer = allPlayers.get(rand.nextInt(allPlayers.size()));
+            if (!selectedPlayers.contains(randomPlayer)) {
+                selectedPlayers.add(randomPlayer);
+            }
+        }
+
+        return selectedPlayers;
     }
 
     /**
@@ -92,11 +127,10 @@ public class OptionsController {
     private void handleUpdate(String username) {
         //disableOptionsView();
         UpdateView updateView = new UpdateView();
-        boolean isAdmin = new PlayerManager().getPlayerByUsername(username).isAdmin();
+        boolean isAdmin = player.isAdmin();
         new UpdateController(updateView, username, isAdmin, desktopPane); // Pass the desktopPane
         InternalFrame.addInternalFrame(desktopPane, "Update", updateView.getUpdatePanel(), 700, 400, true);
         attachWindowListener(updateView);
-
     }
 
     /**
@@ -143,7 +177,11 @@ public class OptionsController {
         //fadeTheWindow(1.0f);
     }
 
-
+    /**
+     * Fades the options view window to the specified opacity level.
+     *
+     * @param opacity the desired opacity level (between 0.0 and 1.0)
+     */
     private void fadeTheWindow(float opacity) {
         Window window = SwingUtilities.getWindowAncestor(this.optionsView);
         if (window != null) {

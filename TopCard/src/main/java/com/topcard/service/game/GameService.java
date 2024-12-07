@@ -10,7 +10,7 @@ import java.util.List;
 public class GameService implements IGameService {
     private final Game game;
     private final PlayerService playerService;
-    private List<Player> players;
+    private final List<Player> players;
 
     public GameService(List<Player> players) {
         this.playerService = new PlayerService();
@@ -43,7 +43,7 @@ public class GameService implements IGameService {
     @Override
     public List<Player> executeBettingRound(int points) {
         List<Player> updatedPlayers = game.betAndUpdatePlayerPoints(points, game.getPlayers());
-        updateProfiles(updatedPlayers);
+        updatePoints(updatedPlayers);
         return updatedPlayers;
     }
 
@@ -61,6 +61,18 @@ public class GameService implements IGameService {
     public void updateProfiles(List<Player> players) {
         for (Player player : players) {
             updateProfile(player);
+        }
+    }
+
+    @Override
+    public void updatePoints(Player player) {
+        playerService.changePoints(player.getPlayerId(), player.getPoints());
+    }
+
+    @Override
+    public void updatePoints(List<Player> players) {
+        for (Player player : players) {
+            updatePoints(player);
         }
     }
 

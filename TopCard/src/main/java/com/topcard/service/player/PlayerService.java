@@ -89,7 +89,7 @@ public class PlayerService implements IPlayerService {
         Player player = getPlayerById(playerId);
         if (player != null) {
             player.changePoints(points);
-            updateProfile(player);
+            updateProfile(player, false);
         }
     }
 
@@ -106,6 +106,26 @@ public class PlayerService implements IPlayerService {
             player.setAdmin(true);
             updateProfile(player);
         }
+    }
+
+    private void updateProfile(Player player, boolean changePassword) {
+        if (changePassword) {
+            updateProfile(player);
+            return;
+        }
+        List<String> lines = readLinesFromFile();
+        lines = lines.stream()
+                .map(line -> {
+                    String[] parts = splitLine(line);
+                    if (parts[0].equals(String.valueOf(player.getPlayerId()))) {
+                        player.setPassword(parts[2]); // Keep the existing encrypted password
+                        return playerToCsvString(player);
+                    }
+                    return line;
+                })
+                .collect(Collectors.toList());
+        writeLinesToFile(lines, false);
+        Debug.info("Player's points updated: " + player);
     }
 
     @Override

@@ -70,6 +70,19 @@ public interface IGameService {
     void updateProfiles(List<Player> players);
 
     /**
+     * Updates just player's points
+     *
+     * @param player whose point needs to be updated
+     */
+    void updatePoints(Player player);
+
+    /**
+     * Update points of all players
+     * @param players list of players whose points need to be updated
+     */
+    void updatePoints(List<Player> players);
+
+    /**
      * Displays the winners of the game.
      *
      * @param winners the list of winning players
