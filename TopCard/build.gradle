@@ -19,6 +19,7 @@ dependencies {
 
     implementation 'org.openjfx:javafx-controls:17'
     implementation 'org.openjfx:javafx-fxml:17'
+    implementation 'org.openjfx:javafx-swing:17.0.0.1'
 
     implementation 'org.mindrot:jbcrypt:0.4'  // For encryption and decryption
 }
@@ -29,9 +30,16 @@ test {
 
 javafx {
     version = '17'
-    modules = [ 'javafx.controls', 'javafx.fxml' ]
+    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.swing' ]
 }
 
 application {
     mainClass = 'com.topcard.app.MainApp'
+}
+
+run {
+    jvmArgs = [
+        '--module-path', classpath.asPath,
+        '--add-modules', 'javafx.controls,javafx.fxml,javafx.swing'
+    ]
 }

@@ -10,9 +10,11 @@ import java.util.List;
 public class GameService implements IGameService {
     private final Game game;
     private final PlayerService playerService;
+    private List<Player> players;
 
     public GameService(List<Player> players) {
         this.playerService = new PlayerService();
+        this.players = players;
         addPlayers(players);
         List<Player> updatedPlayers = updateExistingPlayers(players);
         this.game = new Game(updatedPlayers);
@@ -65,6 +67,11 @@ public class GameService implements IGameService {
     @Override
     public void displayWinners(List<Player> winners) {
         game.displayWinners(winners);
+    }
+
+    @Override
+    public List<Player> getPlayers() {
+        return players;
     }
 
     /**

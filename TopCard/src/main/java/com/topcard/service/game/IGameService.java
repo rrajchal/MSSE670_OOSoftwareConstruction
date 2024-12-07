@@ -75,4 +75,11 @@ public interface IGameService {
      * @param winners the list of winning players
      */
     void displayWinners(List<Player> winners);
+
+    /**
+     * Provides players of the game
+     *
+     * @return current players in the game
+     */
+    List<Player> getPlayers();
 }

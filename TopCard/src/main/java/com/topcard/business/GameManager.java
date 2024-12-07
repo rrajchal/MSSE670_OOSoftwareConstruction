@@ -61,6 +61,14 @@ public class GameManager {
     }
 
     /**
+     *
+     * @return players of the game
+     */
+    public List<Player> getPlayers() {
+        return gameService.getPlayers();
+    }
+
+    /**
      * Executes a betting round with the specified points.
      *
      * @param points the points for the betting round

@@ -33,8 +33,10 @@ public class UpdateView extends JFrame {
     private JPasswordField passwordField;
     private JTextField dateOfBirthField;
     private JTextField pointsField;
+    private JLabel isAdminLabel;
     private JCheckBox isAdminCheckBox;
     private JButton updateButton;
+    private JPanel updatePanel;
 
     /**
      * Constructor to initialize the update view.
@@ -51,7 +53,7 @@ public class UpdateView extends JFrame {
      * Initializes the components of the update panel and sets up the layout.
      */
     private void initComponents() {
-        JPanel updatePanel = new JPanel(new GridBagLayout());
+        updatePanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
 
@@ -140,12 +142,17 @@ public class UpdateView extends JFrame {
         gbc.gridy = 8;
         updatePanel.add(dateOfBirthField, gbc);
 
+        JLabel pointLabel = new JLabel("Point");
+        gbc.gridx = 0;
+        gbc.gridy = 9;
+        updatePanel.add(pointLabel, gbc);
+
         pointsField = new JTextField(15);
         gbc.gridx = 1;
         gbc.gridy = 9;
         updatePanel.add(pointsField, gbc);
 
-        JLabel isAdminLabel = new JLabel("Is Admin:");
+        isAdminLabel = new JLabel("Is Admin:");
         gbc.gridx = 0;
         gbc.gridy = 10;
         updatePanel.add(isAdminLabel, gbc);
@@ -166,6 +173,10 @@ public class UpdateView extends JFrame {
     }
 
     // Getters for the components
+    public JPanel getUpdatePanel() {
+        return updatePanel;
+    }
+
     public JTextField getSearchField() {
         return searchField;
     }
@@ -180,6 +191,10 @@ public class UpdateView extends JFrame {
 
     public JTextField getIdField() {
         return idField;
+    }
+
+    public JLabel getIsAdminLabel() {
+        return isAdminLabel;
     }
 
     public JTextField getFirstNameField() {

@@ -3,13 +3,15 @@ package com.topcard.presentation.controller;
 import com.topcard.business.PlayerManager;
 import com.topcard.debug.Debug;
 import com.topcard.domain.Player;
+import com.topcard.presentation.common.Constants;
+import com.topcard.presentation.common.Validation;
 import com.topcard.presentation.view.UpdateView;
 
 import java.awt.Color;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import javax.swing.JOptionPane;
+import javax.swing.*;
 
 /**
  * This class represents the controller for the update view.
@@ -17,7 +19,7 @@ import javax.swing.JOptionPane;
  *
  * <p>
  * Author: Rajesh Rajchal
- * Date: 12/01/2024
+ * Date: 12/05/2024
  * Subject: MSSE 670 Object Oriented Software Construction
  * </p>
  */
@@ -26,6 +28,8 @@ public class UpdateController {
     private final UpdateView updateView;
     private final PlayerManager playerManager;
     private final boolean isAdmin;
+    private final String username;
+    private final JDesktopPane desktopPane;
 
     /**
      * Constructor to initialize the update controller with the given update view and admin status.
@@ -33,8 +37,10 @@ public class UpdateController {
      * @param updateView the update view
      * @param isAdmin whether the user is an admin
      */
-    public UpdateController(UpdateView updateView, boolean isAdmin) {
+    public UpdateController(UpdateView updateView, String username, boolean isAdmin, JDesktopPane desktopPane) {
         this.updateView = updateView;
+        this.username = username;
+        this.desktopPane = desktopPane;
         this.playerManager = new PlayerManager();
         this.isAdmin = isAdmin;
         initController();
@@ -48,12 +54,32 @@ public class UpdateController {
         if (isAdmin) {
             updateView.getSearchButton().addActionListener(e -> handleSearch());
         } else {
+            populateUserInfo(username);
             updateView.getSearchField().setVisible(false);
             updateView.getSearchButton().setVisible(false);
+            updateView.getIsAdminLabel().setVisible(false);
+            updateView.getPointsField().setEnabled(false);
             updateView.getIsAdminCheckBox().setVisible(false);
         }
         updateView.getUsernameField().setEnabled(false);
         updateView.getUpdateButton().addActionListener(e -> handleUpdate());
+    }
+
+    /**
+     * Populate user information in the options view
+     */
+    private void populateUserInfo(String username) {
+        PlayerManager playerManager = new PlayerManager();
+        Player player = playerManager.getPlayerByUsername(username);
+        if (player != null) {
+            updateView.getIdField().setText(String.valueOf(player.getPlayerId()));
+            updateView.getFirstNameField().setText(player.getFirstName());
+            updateView.getLastNameField().setText(player.getLastName());
+            updateView.getUsernameField().setText(player.getUsername());
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Constants.DATE_FORMAT);
+            updateView.getDateOfBirthField().setText(player.getDateOfBirth().format(formatter));
+            updateView.getPointsField().setText(String.valueOf(player.getPoints()));
+        }
     }
 
     /**

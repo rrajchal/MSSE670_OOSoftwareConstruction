@@ -1,4 +1,4 @@
-package com.topcard.presentation.controller;
+package com.topcard.presentation.common;
 
 public class Constants {
     public static final String REQUIRED = "This field is required.";

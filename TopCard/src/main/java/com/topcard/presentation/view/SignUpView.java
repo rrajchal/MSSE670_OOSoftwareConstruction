@@ -1,6 +1,6 @@
 package com.topcard.presentation.view;
 
-import com.topcard.presentation.controller.Constants;
+import com.topcard.presentation.common.Constants;
 
 import javax.swing.*;
 import java.awt.*;

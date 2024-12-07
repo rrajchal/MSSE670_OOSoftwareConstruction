@@ -3,9 +3,14 @@ package com.topcard.presentation.controller;
 import com.topcard.business.PlayerManager;
 import com.topcard.debug.Debug;
 import com.topcard.domain.Player;
+import com.topcard.presentation.common.InternalFrame;
 import com.topcard.presentation.view.AddPlayerView;
+import com.topcard.presentation.view.GameView;
 import com.topcard.presentation.view.OptionsView;
 import com.topcard.presentation.view.UpdateView;
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.stage.Stage;
 
 import javax.swing.*;
 import java.awt.Window;
@@ -18,22 +23,25 @@ import java.awt.event.WindowEvent;
  *
  * <p>
  * Author: Rajesh Rajchal
- * Date: 11/30/2024
+ * Date: 12/07/2024
  * Subject: MSSE 670 Object Oriented Software Construction
  * </p>
  */
 public class OptionsController {
 
     private final OptionsView optionsView;
+    private final JDesktopPane desktopPane;
 
     /**
      * Constructor to initialize the options controller with the given options view.
      *
      * @param optionsView the options view
      * @param username the username of the authenticated player
+     * @param desktopPane the desktop pane to manage internal frames
      */
-    public OptionsController(OptionsView optionsView, String username) {
+    public OptionsController(OptionsView optionsView, String username, JDesktopPane desktopPane) {
         this.optionsView = optionsView;
+        this.desktopPane = desktopPane;
         initController(username);
     }
 
@@ -57,13 +65,22 @@ public class OptionsController {
         optionsView.getPlayGameButton().addActionListener(e -> handlePlayGame());
         optionsView.getUpdateButton().addActionListener(e -> handleUpdate(username));
         optionsView.getAddPlayerButton().addActionListener(e -> handleAddPlayer());
-
-        optionsView.show();
     }
 
-    // TODO TBD
     private void handlePlayGame() {
-        JOptionPane.showMessageDialog(optionsView, "Play Game View is TBD", "Success", JOptionPane.INFORMATION_MESSAGE);
+        // Initialize JavaFX environment if not already initialized
+        new JFXPanel();
+        Platform.setImplicitExit(false);
+        Platform.runLater(() -> {
+            try {
+                GameView gameView = new GameView();
+                Stage stage = new Stage();
+                gameView.start(stage);
+            } catch (Exception e) {
+                Debug.error("Failed to start the game view: " + e.getMessage());
+                JOptionPane.showMessageDialog(optionsView, "Failed to start the game view.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
     }
 
     /**
@@ -73,12 +90,13 @@ public class OptionsController {
      * @param username the username of the authenticated player
      */
     private void handleUpdate(String username) {
-        disableOptionsView();
+        //disableOptionsView();
         UpdateView updateView = new UpdateView();
         boolean isAdmin = new PlayerManager().getPlayerByUsername(username).isAdmin();
-        new UpdateController(updateView, isAdmin);
+        new UpdateController(updateView, username, isAdmin, desktopPane); // Pass the desktopPane
+        InternalFrame.addInternalFrame(desktopPane, "Update", updateView.getUpdatePanel(), 700, 400, true);
         attachWindowListener(updateView);
-        updateView.show();
+
     }
 
     /**
@@ -113,7 +131,7 @@ public class OptionsController {
     private void disableOptionsView() {
         optionsView.getUpdateButton().setEnabled(false);
         optionsView.getAddPlayerButton().setEnabled(false);
-        fadeTheWindow(0.5f);
+        //fadeTheWindow(0.5f);
     }
 
     /**
@@ -122,7 +140,7 @@ public class OptionsController {
     private void enableOptionsView() {
         optionsView.getUpdateButton().setEnabled(true);
         optionsView.getAddPlayerButton().setEnabled(true);
-        fadeTheWindow(1.0f);
+        //fadeTheWindow(1.0f);
     }
 
 

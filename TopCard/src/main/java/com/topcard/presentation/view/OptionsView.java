@@ -11,14 +11,11 @@ import java.awt.*;
  *
  * <p>
  * Author: Rajesh Rajchal
- * Date: 11/30/2024
+ * Date: 12/07/2024
  * Subject: MSSE 670 Object Oriented Software Construction
  * </p>
  */
-public class OptionsView extends JFrame {
-
-    // Frame for displaying the options view
-    private JFrame optionsFrame;
+public class OptionsView extends JPanel {
 
     // Panel for organizing the options components
     private JPanel optionsPanel;
@@ -43,12 +40,6 @@ public class OptionsView extends JFrame {
      * Initializes the components of the options panel and sets up the layout.
      */
     private void initComponents() {
-        // Option Frame
-        optionsFrame = new JFrame("Choose an Option");
-        optionsFrame.setSize(400, 200);
-        optionsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        optionsFrame.setLocationRelativeTo(null); // Center the frame on the monitor
-
         // Option Panel to populate all widgets
         optionsPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -72,12 +63,13 @@ public class OptionsView extends JFrame {
         gbc.gridy = 0;
         optionsPanel.add(updateButton, gbc);
 
-        optionsFrame.add(optionsPanel);
+        // Add optionsPanel to the main panel
+        this.setLayout(new BorderLayout());
+        this.add(optionsPanel, BorderLayout.CENTER);
     }
 
-    // Getters for the components
-    public JFrame getOptionsFrame() {
-        return optionsFrame;
+    public JPanel getOptionsPanel() {
+        return this.optionsPanel;
     }
 
     public JButton getPlayGameButton() {
@@ -99,12 +91,5 @@ public class OptionsView extends JFrame {
      */
     public void setAddPlayerButtonVisibility(boolean isVisible) {
         addPlayerButton.setVisible(isVisible);
-    }
-
-    /**
-     * Displays the options frame.
-     */
-    public void show() {
-        optionsFrame.setVisible(true);
     }
 }

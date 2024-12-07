@@ -3,6 +3,9 @@ package com.topcard.presentation.controller;
 import com.topcard.business.PlayerManager;
 import com.topcard.debug.Debug;
 import com.topcard.domain.Player;
+import com.topcard.presentation.common.Constants;
+import com.topcard.presentation.common.InternalFrame;
+import com.topcard.presentation.common.Validation;
 import com.topcard.presentation.view.LoginView;
 import com.topcard.presentation.view.OptionsView;
 import com.topcard.presentation.view.SignUpView;
@@ -10,8 +13,7 @@ import com.topcard.presentation.view.SignUpView;
 import java.awt.Color;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.JFrame;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 /**
  * This class represents the controller for the login view.
@@ -19,20 +21,22 @@ import javax.swing.JTextField;
  *
  * <p>
  * Author: Rajesh Rajchal
- * Date: 11/30/2024
+ * Date: 12/07/2024
  * Subject: MSSE 670 Object Oriented Software Construction
  * </p>
  */
 public class LoginController extends JFrame {
 
     private final LoginView loginView;
+    private final JDesktopPane desktopPane;
     /**
      * Constructor to initialize the login controller with the given login view.
      *
      * @param loginView the login view
      */
-    public LoginController(LoginView loginView) {
+    public LoginController(LoginView loginView, JDesktopPane desktopPane) {
         this.loginView = loginView;
+        this.desktopPane = desktopPane;
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         initController();
     }
@@ -65,9 +69,23 @@ public class LoginController extends JFrame {
         if (validateInputs(loginView.getUsernameField(), username, Constants.USERNAME_CANNOT_HAVE_SPACES) &&
             validateInputs(loginView.getPasswordField(), password, Constants.PASSWORD_CANNOT_HAVE_SPACES) &&
             authenticate(username, password)) {
-            loginView.getLoginPanel().getTopLevelAncestor().setVisible(false); // Close the LoginView
+
+            // Close the LoginView internal frame
+            JInternalFrame loginInternalFrame = (JInternalFrame) SwingUtilities.getAncestorOfClass(JInternalFrame.class, loginView.getLoginPanel());
+            if (loginInternalFrame != null) {
+                loginInternalFrame.dispose();
+            }
+
+            // Initialize and add the options view as an internal frame
             OptionsView optionsView = new OptionsView();
-            new OptionsController(optionsView, username);
+            new OptionsController(optionsView, username, desktopPane);
+
+            desktopPane.add(optionsView);
+            desktopPane.revalidate();
+            desktopPane.repaint();
+
+            // Add internal frame
+            InternalFrame.addInternalFrame(desktopPane, "Choose an Option", optionsView.getOptionsPanel(), 400, 200, false);
         } else {
             loginView.getMessageLabel().setForeground(Color.RED);
             loginView.getMessageLabel().setText(Constants.INVALID_USERNAME_OR_PASSWORD);

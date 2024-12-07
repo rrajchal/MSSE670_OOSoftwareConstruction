@@ -1,4 +1,4 @@
-package com.topcard.presentation.controller;
+package com.topcard.presentation.common;
 
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
