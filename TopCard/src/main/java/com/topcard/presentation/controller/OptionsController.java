@@ -16,6 +16,7 @@ import javax.swing.*;
 import java.awt.Window;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -101,8 +102,11 @@ public class OptionsController {
      * @return the list of four players (including the authenticated user)
      */
     private List<Player> getThreeRandomPlayers() {
+        return generatePlayers();
+        /*
         PlayerManager playerManager = new PlayerManager();
         List<Player> allPlayers = playerManager.getAllPlayers(); // Assuming this method exists
+
         List<Player> selectedPlayers = new ArrayList<>();
         selectedPlayers.add(player); // Add the logged-in player as the first player
 
@@ -116,6 +120,20 @@ public class OptionsController {
         }
 
         return selectedPlayers;
+        */
+    }
+
+    private List<Player> generatePlayers() {
+        List<Player> players = new ArrayList<>();
+        Player mickey = new Player("mickey", "password", "Mickey", "Mouse", LocalDate.of(1990, 1, 1));
+        Player donald = new Player("donald", "password", "Donald", "Duck", LocalDate.of(1995, 6, 15));
+        Player michael = new Player("michael", "password", "Michael", "Smith", LocalDate.of(1985, 11, 25));
+        Player rajesh = new Player("rajesh", "password", "Rajesh", "Rajchal", LocalDate.of(1980, 4, 10));
+        players.add(mickey);
+        players.add(donald);
+        players.add(michael);
+        players.add(rajesh);
+        return players;
     }
 
     /**

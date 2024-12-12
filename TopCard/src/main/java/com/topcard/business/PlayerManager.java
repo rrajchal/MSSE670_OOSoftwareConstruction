@@ -34,7 +34,8 @@ public class PlayerManager {
      * @param player the player to add
      */
     public boolean addPlayer(Player player) {
-        return playerService.addPlayer(player);
+        //return playerService.addPlayer(player);
+        return true;
     }
 
     /**
@@ -43,7 +44,7 @@ public class PlayerManager {
      * @param players the list of players to add
      */
     public void addPlayers(List<Player> players) {
-        playerService.addPlayers(players);
+        //playerService.addPlayers(players);
     }
 
     /**
@@ -52,7 +53,7 @@ public class PlayerManager {
      * @param playerId the ID of the player to remove
      */
     public void removePlayer(int playerId) {
-        playerService.removePlayer(playerId);
+        //playerService.removePlayer(playerId);
     }
 
     /**
@@ -82,7 +83,7 @@ public class PlayerManager {
      * @param points   the new points value
      */
     public void changePoints(int playerId, int points) {
-        playerService.changePoints(playerId, points);
+        //playerService.changePoints(playerId, points);
     }
 
     /**
@@ -110,7 +111,7 @@ public class PlayerManager {
      * @param player the player with updated information
      */
     public void updateProfile(Player player) {
-        playerService.updateProfile(player);
+        //playerService.updateProfile(player);
     }
 
     /**
@@ -122,7 +123,7 @@ public class PlayerManager {
      * @param newDateOfBirth the new date of birth
      */
     public void updateProfile(int playerId, String newFirstName, String newLastName, LocalDate newDateOfBirth) {
-        playerService.updateProfile(playerId, newFirstName, newLastName, newDateOfBirth);
+        //playerService.updateProfile(playerId, newFirstName, newLastName, newDateOfBirth);
     }
 
     /**
@@ -131,7 +132,7 @@ public class PlayerManager {
      * @param players the list of players with updated information
      */
     public void updateProfiles(List<Player> players) {
-        playerService.updateProfiles(players);
+        //playerService.updateProfiles(players);
     }
 
     public boolean verifyPassword(String plainPassword, String encryptedPassword) {

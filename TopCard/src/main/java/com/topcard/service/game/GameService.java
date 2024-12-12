@@ -43,7 +43,7 @@ public class GameService implements IGameService {
     @Override
     public List<Player> executeBettingRound(int points) {
         List<Player> updatedPlayers = game.betAndUpdatePlayerPoints(points, game.getPlayers());
-        updatePoints(updatedPlayers);
+        //updatePoints(updatedPlayers);
         return updatedPlayers;
     }
 

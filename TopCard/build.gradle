@@ -46,6 +46,10 @@ jar {
         include 'data/players.csv'
         include 'images/**'
     }
+    // Ensure resources are included in the JAR
+    from('src/main/resources') {
+        include '**/*'
+    }
 }
 
 run {

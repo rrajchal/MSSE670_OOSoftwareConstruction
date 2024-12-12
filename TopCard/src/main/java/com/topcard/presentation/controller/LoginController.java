@@ -66,9 +66,9 @@ public class LoginController extends JFrame {
         String username = loginView.getUsernameField().getText();
         String password = new String(loginView.getPasswordField().getPassword());
 
-        if (validateInputs(loginView.getUsernameField(), username, Constants.USERNAME_CANNOT_HAVE_SPACES) &&
-            validateInputs(loginView.getPasswordField(), password, Constants.PASSWORD_CANNOT_HAVE_SPACES) &&
-            authenticate(username, password)) {
+       // if (validateInputs(loginView.getUsernameField(), username, Constants.USERNAME_CANNOT_HAVE_SPACES) &&
+       //     validateInputs(loginView.getPasswordField(), password, Constants.PASSWORD_CANNOT_HAVE_SPACES) &&
+       //     authenticate(username, password)) {
 
             // Close the LoginView internal frame
             JInternalFrame loginInternalFrame = (JInternalFrame) SwingUtilities.getAncestorOfClass(JInternalFrame.class, loginView.getLoginPanel());
@@ -86,10 +86,10 @@ public class LoginController extends JFrame {
 
             // Add internal frame
             InternalFrame.addInternalFrame(desktopPane, "Choose an Option", optionsView.getOptionsPanel(), 400, 200, false);
-        } else {
-            loginView.getMessageLabel().setForeground(Color.RED);
-            loginView.getMessageLabel().setText(Constants.INVALID_USERNAME_OR_PASSWORD);
-        }
+        //} else {
+        //    loginView.getMessageLabel().setForeground(Color.RED);
+        //    loginView.getMessageLabel().setText(Constants.INVALID_USERNAME_OR_PASSWORD);
+        //}
     }
 
     /**
