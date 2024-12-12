@@ -37,9 +37,20 @@ application {
     mainClass = 'com.topcard.app.MainApp'
 }
 
+jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    from('src/main/resources') {
+        include 'data/players.csv'
+        include 'images/**'
+    }
+}
+
 run {
     jvmArgs = [
-        '--module-path', classpath.asPath,
-        '--add-modules', 'javafx.controls,javafx.fxml,javafx.swing'
+            '--module-path', classpath.asPath,
+            '--add-modules', 'javafx.controls,javafx.fxml,javafx.swing'
     ]
 }
