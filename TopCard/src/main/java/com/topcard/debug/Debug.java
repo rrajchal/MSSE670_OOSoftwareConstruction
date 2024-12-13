@@ -5,7 +5,7 @@ package com.topcard.debug;
  * Allows enabling or disabling debug mode.
  * <p>
  * Author: Rajesh Rajchal
- * Date: 10/27/2024
+ * Date: 12/13/2024
  * Subject: MSSE 670 Object Oriented Software construction
  */
 public class Debug {
@@ -54,8 +54,6 @@ public class Debug {
      * @param message the error message to log
      */
     public static void error(String message) {
-        if (debugMode) {
-            System.err.println(RED_TEXT + "ERROR: " + message + DEFAULT_TEXT);
-        }
+        System.err.println(RED_TEXT + "ERROR: " + message + DEFAULT_TEXT);
     }
 }

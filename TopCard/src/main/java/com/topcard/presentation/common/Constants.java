@@ -24,4 +24,28 @@ public class Constants {
     public static final String AGREEMENT_REQUIRED = "Terms Agreement Required";
     public static final String I_AGREE_TERMS = "<html>I agree to the <a href='#'>Terms of Use</a> and <a href='#'>Privacy Policy</a>.</html>";
     public static final String ALREADY_HAVE_ACCOUNT = "<html>Already have an account? <a href='#'>Login here</a></html>";
+    public static final String ABOUT_GAME = "About Game";
+    public static final String ABOUT_GAME_INFO = "<html><body style='width: 450px;'>" +
+            "<b>About Game</b><br><br>" +
+            "This is a GUI-based card game using a standard 52-card deck, supporting 3 to 5 players. " +
+            "Before each round begins, players place their bets and the deck is shuffled. Each player is then dealt three cards. " +
+            "Based on the cards they receive, players can win or lose money.<br><br>" +
+            "<b>Points Calculation:</b><br>" +
+            "• Ace is worth 1 point.<br>" +
+            "• Cards 2 to 10 are worth their face value.<br>" +
+            "• Face cards (J, Q, K) are each worth 10 points.<br><br>" +
+            "The player with the highest total points wins. In the event of tied point totals, specific card rankings determine the winner: " +
+            "K > Q, Q > J, J > 10, 10 > 9, and so on. If multiple players have the highest point with the same total and card rankings, " +
+            "they both win and receive the betting amount from the other players.<br><br>" +
+            "<b>Registration</b><br>" +
+            "Players must register before entering the game, providing their name, date of birth, and email. " +
+            "The login information is securely stored in the database.<br><br>" +
+            "<b>Authentication</b><br>" +
+            "Players must log in each time before playing, providing correct login information. " +
+            "Players must be 18 years old or older to play.<br><br>" +
+            "<b>Profile</b><br>" +
+            "Players can view their profile information, including name, age, and points.<br><br>" +
+            "<b>Update</b><br>" +
+            "Players can update their profile information." +
+            "</body></html>";
 }

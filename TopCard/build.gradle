@@ -38,13 +38,10 @@ application {
 }
 
 jar {
-    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-    from {
-        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
-    }
-    from('src/main/resources') {
-        include 'data/players.csv'
-        include 'images/**'
+    manifest {
+        attributes(
+                'Main-Class': 'com.topcard.app.MainApp'
+        )
     }
 }
 

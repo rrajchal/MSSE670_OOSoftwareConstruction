@@ -5,7 +5,13 @@ import com.topcard.domain.Player;
 import com.topcard.exceptions.TopCardException;
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.io.*;
+import java.io.BufferedWriter;
+import java.io.InputStream;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -21,23 +27,23 @@ import java.util.stream.Collectors;
  * </p>
  * <p>
  * Author: Rajesh Rajchal
- * Date: 11/21/2024
+ * Date: 12/13/2024
  * </p>
  */
 public class PlayerService implements IPlayerService {
 
-    private static final String FILE_PATH;
+    private static final Path dataFilePath;
 
     static {
         Properties properties = new Properties();
-        try (InputStream input = PlayerService.class.getClassLoader().getResourceAsStream("config.properties")) {
-            if (input == null) {
-                throw new TopCardException("Unable to find config.properties");
-            }
+        Path configFilePath = Paths.get("config", "config.properties");
+
+        try (InputStream input = Files.newInputStream(configFilePath)) {
+            // Load the properties file
             properties.load(input);
-            FILE_PATH = properties.getProperty("FILE_PATH");
-        } catch (IOException e) {
-            throw new TopCardException("Failed to load configuration properties", e);
+            dataFilePath = Paths.get(properties.getProperty("FILE_PATH"));
+        } catch (IOException ex) {
+            throw new TopCardException("Failed to load configuration properties. " + ex.getMessage());
         }
     }
 
@@ -71,7 +77,7 @@ public class PlayerService implements IPlayerService {
         lines = lines.stream()
                 .filter(line -> parseInt(splitLine(line)[0]) != playerId)
                 .collect(Collectors.toList());
-        writeLinesToFile(lines, false);
+        writeLinesToFile(lines);
     }
 
     @Override
@@ -88,7 +94,7 @@ public class PlayerService implements IPlayerService {
     public void changePoints(int playerId, int points) {
         Player player = getPlayerById(playerId);
         if (player != null) {
-            player.changePoints(points);
+            player.setPoints(points);
             updateProfile(player, false);
         }
     }
@@ -124,7 +130,7 @@ public class PlayerService implements IPlayerService {
                     return line;
                 })
                 .collect(Collectors.toList());
-        writeLinesToFile(lines, false);
+        writeLinesToFile(lines);
         Debug.info("Player's points updated: " + player);
     }
 
@@ -145,7 +151,7 @@ public class PlayerService implements IPlayerService {
                     return line;
                 })
                 .collect(Collectors.toList());
-        writeLinesToFile(lines, false);
+        writeLinesToFile(lines);
         Debug.info("Player updated: " + player);
     }
 
@@ -219,7 +225,12 @@ public class PlayerService implements IPlayerService {
      * @param player the player to be registered
      */
     private void register(Player player) {
-        writeLinesToFile(Collections.singletonList(playerToCsvString(player)), true);
+        try (BufferedWriter writer = Files.newBufferedWriter(dataFilePath, StandardOpenOption.APPEND)) {
+            writer.write(playerToCsvString(player));
+            writer.newLine();
+        } catch (IOException e) {
+            throw new TopCardException("Error writing to player data file: " + e.getMessage());
+        }
     }
 
     /**
@@ -227,7 +238,7 @@ public class PlayerService implements IPlayerService {
      * This function is made private and used in Unit Test.
      */
     private void deleteAllPlayersData() {
-        writeLinesToFile(Collections.emptyList(), false);
+        writeLinesToFile(Collections.emptyList());
     }
 
     /**
@@ -236,26 +247,27 @@ public class PlayerService implements IPlayerService {
      * @return a list of strings, each representing a line from the file
      */
     private List<String> readLinesFromFile() {
-        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
-            return reader.lines().collect(Collectors.toList());
+        try {
+            return Files.readAllLines(dataFilePath);
         } catch (IOException e) {
-            throw new TopCardException("Error reading player ID file", e);
+            throw new TopCardException("Cannot Read data file. " + e.getMessage());
         }
     }
 
     /**
-     * Writes lines to the player ID file.
+     * Writes lines to the player data file.
      *
      * @param lines  the lines to be written
-     * @param append whether to append to the file or overwrite it
      */
-    private void writeLinesToFile(List<String> lines, boolean append) {
-        try (FileWriter writer = new FileWriter(FILE_PATH, append)) {
+    private void writeLinesToFile(List<String> lines) {
+        // Append new lines to the file
+        try (BufferedWriter writer = Files.newBufferedWriter(dataFilePath, StandardOpenOption.TRUNCATE_EXISTING)) {
             for (String line : lines) {
-                writer.write(line + System.lineSeparator());
+                writer.write(line);
+                writer.newLine();
             }
         } catch (IOException e) {
-            throw new TopCardException("Error writing to player ID file", e);
+            throw new TopCardException("Error writing to player data file: " + e.getMessage(), e);
         }
     }
 
@@ -286,15 +298,13 @@ public class PlayerService implements IPlayerService {
      * @return the matching player, or null if not found
      */
     private Player findPlayer(LinePredicate predicate) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
-            return reader.lines()
-                    .filter(line -> !line.isEmpty())
-                    .filter(predicate::test)
-                    .map(this::csvStringToPlayer)
-                    .findFirst().orElse(null);
-        } catch (IOException e) {
-            throw new TopCardException("Error reading player ID file", e);
+        List<String> lines = readLinesFromFile();
+        for (String line : lines) {
+            if (predicate.test(line)) {
+                return csvStringToPlayer(line);
+            }
         }
+        return null;
     }
 
     /**

@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
  *
  * <p>
  * Author: Rajesh Rajchal
- * Date: 12/07/2024
+ * Date: 12/13/2024
  * Subject: MSSE 670 Object Oriented Software Construction
  * </p>
  */
@@ -38,10 +38,6 @@ public class GameController {
     private ImageView player3C1, player3C2, player3C3;
     @FXML
     private ImageView player4C1, player4C2, player4C3;
-
-    @FXML
-    private Button startButton;
-
     @FXML
     private TextField winnerTextField;
     @FXML
@@ -84,11 +80,6 @@ public class GameController {
      */
     public void setPlayersPoints(List<Player> players) {
         this.players = players;
-        player1FirstName.setText(players.get(0).getFirstName());
-        player2FirstName.setText(players.get(1).getFirstName());
-        player3FirstName.setText(players.get(2).getFirstName());
-        player4FirstName.setText(players.get(3).getFirstName());
-
         player1Balance.setText(String.valueOf(players.get(0).getPoints()));
         player2Balance.setText(String.valueOf(players.get(1).getPoints()));
         player3Balance.setText(String.valueOf(players.get(2).getPoints()));
@@ -123,7 +114,7 @@ public class GameController {
             // Determine winners and display them
             List<Player> winners = gameManager.determineWinner();
             displayWinners(winners);
-            setPlayersPoints(players);
+            setPlayersPoints(updatedPlayers);
         }
     }
 
@@ -274,10 +265,8 @@ public class GameController {
         );
         clonedPlayer.setPlayerId(player.getPlayerId());
         clonedPlayer.setPoints(player.getPoints());
-        clonedPlayer.setPoints(player.getPoints());
         clonedPlayer.setAdmin(player.isAdmin());
         clonedPlayer.setLoggedIn(player.isLoggedIn());
         return clonedPlayer;
     }
-
 }
